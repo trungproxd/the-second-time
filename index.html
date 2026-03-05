@@ -14,11 +14,11 @@
         .meteor { position: absolute; top: -10px; width: 2px; height: 50px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); transform: rotate(-45deg); animation: shoot 5s linear infinite; }
         @keyframes shoot { 0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 1; } 100% { top: 110%; transform: translateX(-600px) rotate(-45deg); opacity: 0; } }
 
-        /* KHUNG CHÍNH (GIỮA MÀN HÌNH) */
+        /* KHUNG CHÍNH */
         .container { 
             position: relative; width: 850px; height: 550px; 
             background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(15px); 
-            border: 2px solid rgba(56, 189, 248, 0.3); border-radius: 20px; 
+            border: 2px solid rgba(56, 189, 248, 0.5); border-radius: 20px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.9); z-index: 10; 
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
@@ -26,56 +26,66 @@
 
         .logo-box img { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6)); }
 
-        /* ĐƯA NHẠC XUỐNG GÓC TRÁI DƯỚI */
+        /* MUSIC PLAYER GÓC TRÁI */
         .music-player-fixed {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 100;
-            display: none; /* Chỉ hiện sau khi nhấn Start */
-            flex-direction: column;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 12px 20px;
-            border-radius: 10px;
-            border-left: 3px solid #38bdf8;
-            backdrop-filter: blur(5px);
+            position: fixed; bottom: 20px; left: 20px; z-index: 100;
+            display: none; flex-direction: column; gap: 8px;
+            background: rgba(15, 23, 42, 0.8); padding: 15px 20px;
+            border-radius: 12px; border-left: 4px solid #38bdf8;
+            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        #music-info { 
-            font-size: 11px; 
-            color: #38bdf8; 
-            letter-spacing: 1px; 
-            text-transform: uppercase; 
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-
+        #music-info { font-size: 11px; color: #38bdf8; letter-spacing: 1.5px; text-transform: uppercase; font-weight: bold; animation: pulse 2s infinite; }
         #volume-box { display: flex; align-items: center; gap: 10px; }
-        #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 80px; height: 4px; }
+        #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 90px; height: 4px; }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-
-        /* NÚT START & LOADING (GIỮ NGUYÊN) */
-        #start-btn { display: none; background: #000; color: #fff; border: 2px solid #38bdf8; padding: 18px 70px; font-size: 20px; font-weight: 700; cursor: pointer; border-radius: 50px; transition: 0.3s; }
-        #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 30px #38bdf8; }
-        
+        /* LOADING AREA */
         .loading-area { width: 60%; text-align: center; }
         .bar-bg { width: 100%; height: 10px; background: rgba(0,0,0,0.5); border-radius: 20px; border: 1px solid #475569; overflow: hidden; }
-        #bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); }
+        #bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); box-shadow: 0 0 15px #38bdf8; }
+        
+        /* NÚT START */
+        #start-btn { 
+            display: none; background: #000; color: #fff; border: 2px solid #38bdf8; 
+            padding: 18px 70px; font-size: 20px; font-weight: 700; cursor: pointer; 
+            letter-spacing: 3px; border-radius: 50px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); 
+            transition: 0.3s;
+        }
+        #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 40px #38bdf8; transform: scale(1.05); }
 
-        /* FORM GIAO DIỆN */
+        /* AUTH FORMS (LẤY LẠI STYLE XỊN) */
         .auth-form { display: none; width: 100%; max-width: 380px; flex-direction: column; opacity: 0; }
         .input-group { margin-bottom: 15px; text-align: left; position: relative; }
-        .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; }
-        .input-group input { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 8px; color: #fff; outline: none; }
-        .confirm-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #0f172a, #000); color: #fff; border: 1px solid #38bdf8; border-radius: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group input { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 8px; color: #fff; outline: none; transition: 0.3s; padding-right: 45px; }
         
+        /* Password Glow */
+        input.weak { border-color: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+        input.medium { border-color: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
+        input.strong { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+
+        .eye-icon { position: absolute; right: 15px; top: 32px; cursor: pointer; color: #64748b; font-size: 18px; transition: 0.3s; }
+        .eye-icon:hover { color: #38bdf8; }
+
+        .confirm-btn { 
+            width: 100%; padding: 15px; background: linear-gradient(135deg, #0f172a, #000); 
+            color: #fff; border: 1px solid #38bdf8; border-radius: 10px; font-weight: 700; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s; margin-top: 10px;
+        }
+        .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); transform: translateY(-3px); }
+
+        /* TOAST */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; }
-        .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #38bdf8; margin-bottom: 10px; transform: translateX(130%); transition: 0.5s; font-size: 12px; }
+        .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #38bdf8; box-shadow: 0 10px 40px rgba(0,0,0,0.6); margin-bottom: 10px; transform: translateX(130%); transition: 0.5s; font-weight: 600; font-size: 12px; }
         .toast.show { transform: translateX(0); }
+
         .switch-text { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 12px; }
         .switch-text b { color: #38bdf8; cursor: pointer; }
+        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 5px; border-radius: 4px; }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .shake { animation: shake 0.4s ease-in-out; }
         .credit { position: absolute; bottom: 15px; right: 20px; color: rgba(255, 255, 255, 0.1); font-size: 10px; }
     </style>
 </head>
@@ -87,7 +97,7 @@
     <div class="music-player-fixed" id="player-ui">
         <div id="music-info">🎵 Now Playing: Senbonzakura</div>
         <div id="volume-box">
-            <span style="font-size: 8px; color: #94a3b8;">VOL</span>
+            <span style="font-size: 8px; color: #94a3b8; font-weight: bold;">VOL</span>
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
         </div>
     </div>
@@ -97,31 +107,41 @@
 
         <div class="loading-area" id="loading-area">
             <div class="bar-bg"><div id="bar-fill"></div></div>
-            <p style="color: #38bdf8; font-size: 10px; margin-top: 10px; letter-spacing: 2px;">SYNCHRONIZING...</p>
+            <p style="color: #38bdf8; font-size: 11px; margin-top: 12px; letter-spacing: 2px;">SYNCHRONIZING SYSTEM... <span id="percent">0%</span></p>
         </div>
 
         <button id="start-btn">NHẤP ĐỂ BẮT ĐẦU</button>
 
         <div id="register-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">ĐĂNG KÝ</h3>
+            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">KHỞI TẠO DỮ LIỆU</h3>
             <div class="input-group">
-                <label>Tên nhân vật</label>
-                <input type="text" id="reg-user" placeholder="Nhập tên...">
+                <label>Tên tài khoản</label>
+                <input type="text" id="reg-user" placeholder="Tên truy cập...">
             </div>
             <div class="input-group">
-                <label>Mật khẩu <span onclick="autoGenPass()" style="color:#38bdf8; cursor:pointer; font-size:9px;">[TẠO TỰ ĐỘNG]</span></label>
-                <input type="password" id="reg-pass">
+                <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">TẠO TỰ ĐỘNG</span></label>
+                <input type="password" id="reg-pass" placeholder="Ít nhất 8 ký tự...">
+                <span class="eye-icon" onclick="togglePass('reg-pass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="handleRegister()">Xác nhận</button>
-            <div class="switch-text">Đã có tài khoản? <b onclick="showForm('login')">Đăng nhập</b></div>
+            <div class="input-group">
+                <label>Xác nhận lại mật khẩu</label>
+                <input type="password" id="reg-repass" placeholder="Xác nhận lại...">
+                <span class="eye-icon" onclick="togglePass('reg-repass')">👁</span>
+            </div>
+            <button class="confirm-btn" onclick="handleRegister()">Đăng Ký Thành Viên</button>
+            <div class="switch-text">Đã có ký ức? <b onclick="showForm('login')">Đăng nhập ngay</b></div>
         </div>
 
         <div id="login-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">ĐĂNG NHẬP</h3>
-            <div class="input-group"><label>Tài khoản</label><input type="text" id="login-user"></div>
-            <div class="input-group"><label>Mật khẩu</label><input type="password" id="login-pass"></div>
-            <button class="confirm-btn" onclick="showToast('Đang kết nối...')">Vào Game</button>
-            <div class="switch-text">Người mới? <b onclick="showForm('register')">Đăng ký</b></div>
+            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">TRUY CẬP VŨ TRỤ</h3>
+            <div class="input-group"><label>Tên tài khoản</label><input type="text" id="login-user"></div>
+            <div class="input-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="login-pass">
+                <span class="eye-icon" onclick="togglePass('login-pass')">👁</span>
+            </div>
+            <button class="confirm-btn" onclick="showToast('Hệ thống đang đồng bộ hóa...')">Vào Game</button>
+            <div class="switch-text">Người mới đến? <b onclick="showForm('register')">Đăng ký tại đây</b></div>
         </div>
     </div>
 
@@ -130,12 +150,15 @@
     <audio id="bgm" loop src="./bgm.mp3"></audio>
 
     <script>
+        const container = document.getElementById('main-container');
         const startBtn = document.getElementById('start-btn');
         const loadingArea = document.getElementById('loading-area');
         const playerUI = document.getElementById('player-ui');
+        const regForm = document.getElementById('register-form');
+        const loginForm = document.getElementById('login-form');
         const bgm = document.getElementById('bgm');
         const volSlider = document.getElementById('volume-slider');
-        const container = document.getElementById('main-container');
+        const passField = document.getElementById('reg-pass');
 
         // Loading Logic
         let progress = 0;
@@ -146,41 +169,91 @@
                 loadingArea.style.display = 'none'; startBtn.style.display = 'block';
             }
             document.getElementById('bar-fill').style.width = progress + '%';
+            document.getElementById('percent').innerText = progress + '%';
         }, 80);
 
         // Click Start
         startBtn.onclick = () => {
             startBtn.style.display = 'none';
-            playerUI.style.display = 'flex'; // HIỆN PLAYER Ở GÓC TRÁI
+            playerUI.style.display = 'flex';
             bgm.volume = 0.5;
-            bgm.play();
+            bgm.play().catch(() => console.log("Cần tương tác người dùng"));
 
-            container.style.width = '400px';
+            container.style.width = '420px';
             container.style.height = 'auto';
-            document.getElementById('register-form').style.display = 'flex';
-            setTimeout(() => { document.getElementById('register-form').style.opacity = '1'; }, 50);
+            regForm.style.display = 'flex';
+            setTimeout(() => regForm.style.opacity = '1', 50);
         };
 
+        // Volume Control
         volSlider.oninput = (e) => { bgm.volume = e.target.value; };
 
+        // Database & UID
+        let userDB = JSON.parse(localStorage.getItem('user_data_tst')) || [];
+        function generateUID() {
+            const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let uid = '';
+            for(let i=0; i<20; i++) uid += charset.charAt(Math.floor(Math.random() * charset.length));
+            return uid;
+        }
+
         function showForm(type) {
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'none';
-            const target = type === 'login' ? 'login-form' : 'register-form';
-            document.getElementById(target).style.display = 'flex';
-            setTimeout(() => { document.getElementById(target).style.opacity = '1'; }, 50);
+            regForm.style.display = 'none'; regForm.style.opacity = '0';
+            loginForm.style.display = 'none'; loginForm.style.opacity = '0';
+            const target = (type === 'login') ? loginForm : regForm;
+            target.style.display = 'flex';
+            setTimeout(() => target.style.opacity = '1', 50);
+        }
+
+        function togglePass(id) {
+            const input = document.getElementById(id);
+            input.type = (input.type === 'password') ? 'text' : 'password';
         }
 
         function showToast(msg) {
             const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg;
             document.getElementById('toast-container').appendChild(t);
             setTimeout(() => t.classList.add('show'), 100);
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 3000);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 4000);
         }
 
+        // Auto Gen & Strength Check
+        function autoGenPass() {
+            const res = "A" + Math.random().toString(36).slice(-8) + "!";
+            passField.value = res;
+            document.getElementById('reg-repass').value = res;
+            passField.classList.add('strong');
+            showToast("Đã tạo mật khẩu mạnh!");
+        }
+
+        passField.addEventListener('input', () => {
+            const v = passField.value;
+            passField.classList.remove('weak', 'medium', 'strong');
+            if(v.length >= 8 && /[A-Z]/.test(v)) passField.classList.add('strong');
+            else if(v.length >= 6) passField.classList.add('medium');
+            else if(v.length > 0) passField.classList.add('weak');
+        });
+
+        // Register Logic
         function handleRegister() {
-            showToast("✨ Đăng ký thành công!");
-            setTimeout(() => showForm('login'), 2000);
+            const user = document.getElementById('reg-user').value.trim();
+            const p1 = passField.value;
+            const p2 = document.getElementById('reg-repass').value;
+
+            if(!user || !p1) { showToast("⚠️ Vui lòng nhập đủ thông tin!"); return; }
+            if(userDB.some(u => u.username === user)) {
+                showToast("❌ Tên tài khoản đã tồn tại!");
+                container.classList.add('shake'); setTimeout(() => container.classList.remove('shake'), 400);
+                return;
+            }
+            if(p1 !== p2) { showToast("❌ Mật khẩu không khớp!"); return; }
+
+            const uid = generateUID();
+            userDB.push({ uid, username: user, password: p1 });
+            localStorage.setItem('user_data_tst', JSON.stringify(userDB));
+
+            showToast("✨ ĐĂNG KÝ THÀNH CÔNG! UID: " + uid);
+            setTimeout(() => showForm('login'), 2500);
         }
     </script>
 </body>
