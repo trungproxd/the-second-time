@@ -1,0 +1,44 @@
+#loading-screen {
+    width: 100vw; height: 100vh;
+    background-color: #8b5cf6; /* Màu tím chủ đạo */
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border: 20px solid #888; /* Viền xám ngoài cùng */
+}
+
+.game-logo {
+    background-color: #f97316; /* Màu cam */
+    width: 80%; padding: 40px;
+    text-align: center; font-weight: bold;
+    border-radius: 10px; margin-bottom: 20px;
+}
+
+.cover-art {
+    margin: 20px 0;
+    font-size: 24px; font-weight: bold;
+}
+
+.progress-bar {
+    width: 600px; height: 25px;
+    background-color: #1e1b4b; /* Xanh đậm nền thanh progress */
+    border-radius: 50px; overflow: hidden;
+}
+
+#progress-fill {
+    width: 0%; height: 100%;
+    background-color: #0000ff; /* Màu xanh chạy tiến trình */
+    transition: width 0.1s;
+}
+
+#start-btn {
+    padding: 15px 30px;
+    font-size: 20px;
+    background: #f97316; color: white;
+    border: none; border-radius: 5px; cursor: pointer;
+    animation: pulse 1.5s infinite; /* Hiệu ứng nhấp nháy thu hút */
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
