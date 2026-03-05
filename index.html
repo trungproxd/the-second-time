@@ -26,7 +26,7 @@
 
         .logo-box img { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6)); }
 
-        /* MUSIC PLAYER GÓC TRÁI */
+        /* NOW PLAYING UI Ở GÓC TRÁI DƯỚI */
         .music-player-fixed {
             position: fixed; bottom: 20px; left: 20px; z-index: 100;
             display: none; flex-direction: column; gap: 8px;
@@ -53,13 +53,13 @@
         }
         #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 40px #38bdf8; transform: scale(1.05); }
 
-        /* AUTH FORMS (LẤY LẠI STYLE XỊN) */
+        /* FORMS STYLE ĐẦY ĐỦ */
         .auth-form { display: none; width: 100%; max-width: 380px; flex-direction: column; opacity: 0; }
         .input-group { margin-bottom: 15px; text-align: left; position: relative; }
         .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
         .input-group input { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 8px; color: #fff; outline: none; transition: 0.3s; padding-right: 45px; }
         
-        /* Password Glow */
+        /* Password Glow theo độ mạnh */
         input.weak { border-color: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
         input.medium { border-color: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
         input.strong { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
@@ -107,7 +107,7 @@
 
         <div class="loading-area" id="loading-area">
             <div class="bar-bg"><div id="bar-fill"></div></div>
-            <p style="color: #38bdf8; font-size: 11px; margin-top: 12px; letter-spacing: 2px;">SYNCHRONIZING SYSTEM... <span id="percent">0%</span></p>
+            <p style="color: #38bdf8; font-size: 11px; margin-top: 12px; letter-spacing: 2px;">INITIALIZING SYSTEM... <span id="percent">0%</span></p>
         </div>
 
         <button id="start-btn">NHẤP ĐỂ BẮT ĐẦU</button>
@@ -115,38 +115,37 @@
         <div id="register-form" class="auth-form">
             <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">KHỞI TẠO DỮ LIỆU</h3>
             <div class="input-group">
-                <label>Tên tài khoản</label>
+                <label>Tên nhân vật</label>
                 <input type="text" id="reg-user" placeholder="Tên truy cập...">
             </div>
             <div class="input-group">
                 <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">TẠO TỰ ĐỘNG</span></label>
-                <input type="password" id="reg-pass" placeholder="Ít nhất 8 ký tự...">
+                <input type="password" id="reg-pass" placeholder="Password...">
                 <span class="eye-icon" onclick="togglePass('reg-pass')">👁</span>
             </div>
             <div class="input-group">
-                <label>Xác nhận lại mật khẩu</label>
-                <input type="password" id="reg-repass" placeholder="Xác nhận lại...">
+                <label>Xác nhận lại</label>
+                <input type="password" id="reg-repass" placeholder="Confirm Password...">
                 <span class="eye-icon" onclick="togglePass('reg-repass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="handleRegister()">Đăng Ký Thành Viên</button>
-            <div class="switch-text">Đã có ký ức? <b onclick="showForm('login')">Đăng nhập ngay</b></div>
+            <button class="confirm-btn" onclick="handleRegister()">Khởi Tạo</button>
+            <div class="switch-text">Đã có ký ức? <b onclick="showForm('login')">Đăng nhập</b></div>
         </div>
 
         <div id="login-form" class="auth-form">
             <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">TRUY CẬP VŨ TRỤ</h3>
-            <div class="input-group"><label>Tên tài khoản</label><input type="text" id="login-user"></div>
+            <div class="input-group"><label>Username</label><input type="text" id="login-user"></div>
             <div class="input-group">
-                <label>Mật khẩu</label>
+                <label>Password</label>
                 <input type="password" id="login-pass">
                 <span class="eye-icon" onclick="togglePass('login-pass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="showToast('Hệ thống đang đồng bộ hóa...')">Vào Game</button>
-            <div class="switch-text">Người mới đến? <b onclick="showForm('register')">Đăng ký tại đây</b></div>
+            <button class="confirm-btn" onclick="showToast('Đang kết nối server...')">Vào Game</button>
+            <div class="switch-text">Người mới? <b onclick="showForm('register')">Đăng ký</b></div>
         </div>
     </div>
 
-    <div class="credit">THE SECOND TIME | KBG</div>
-
+    <div class="credit">THE SECOND TIME | BY KBG</div>
     <audio id="bgm" loop src="./bgm.mp3"></audio>
 
     <script>
@@ -160,7 +159,7 @@
         const volSlider = document.getElementById('volume-slider');
         const passField = document.getElementById('reg-pass');
 
-        // Loading Logic
+        // 1. Loading
         let progress = 0;
         const interval = setInterval(() => {
             progress += Math.floor(Math.random() * 5) + 2;
@@ -170,39 +169,35 @@
             }
             document.getElementById('bar-fill').style.width = progress + '%';
             document.getElementById('percent').innerText = progress + '%';
-        }, 80);
+        }, 100);
 
-        // Click Start
+        // 2. Start & Music
         startBtn.onclick = () => {
             startBtn.style.display = 'none';
             playerUI.style.display = 'flex';
             bgm.volume = 0.5;
-            bgm.play().catch(() => console.log("Cần tương tác người dùng"));
+            bgm.play().catch(() => console.log("Cần click để phát nhạc"));
 
             container.style.width = '420px';
             container.style.height = 'auto';
-            regForm.style.display = 'flex';
-            setTimeout(() => regForm.style.opacity = '1', 50);
+            setTimeout(() => {
+                regForm.style.display = 'flex';
+                setTimeout(() => regForm.style.opacity = '1', 50);
+            }, 400);
         };
 
-        // Volume Control
         volSlider.oninput = (e) => { bgm.volume = e.target.value; };
 
-        // Database & UID
-        let userDB = JSON.parse(localStorage.getItem('user_data_tst')) || [];
+        // 3. Database & UID
+        let users = JSON.parse(localStorage.getItem('user_db_tst')) || [];
         function generateUID() {
-            const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let uid = '';
-            for(let i=0; i<20; i++) uid += charset.charAt(Math.floor(Math.random() * charset.length));
-            return uid;
+            return Array.from({length: 20}, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random()*36)]).join('');
         }
 
         function showForm(type) {
-            regForm.style.display = 'none'; regForm.style.opacity = '0';
-            loginForm.style.display = 'none'; loginForm.style.opacity = '0';
+            regForm.style.display = 'none'; loginForm.style.display = 'none';
             const target = (type === 'login') ? loginForm : regForm;
-            target.style.display = 'flex';
-            setTimeout(() => target.style.opacity = '1', 50);
+            target.style.display = 'flex'; setTimeout(() => target.style.opacity = '1', 50);
         }
 
         function togglePass(id) {
@@ -217,11 +212,11 @@
             setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 4000);
         }
 
-        // Auto Gen & Strength Check
+        // 4. Mật khẩu mạnh & Auto Gen
         function autoGenPass() {
-            const res = "A" + Math.random().toString(36).slice(-8) + "!";
-            passField.value = res;
-            document.getElementById('reg-repass').value = res;
+            const result = "S" + Math.random().toString(36).slice(-8).toUpperCase() + "!";
+            passField.value = result;
+            document.getElementById('reg-repass').value = result;
             passField.classList.add('strong');
             showToast("Đã tạo mật khẩu mạnh!");
         }
@@ -234,25 +229,24 @@
             else if(v.length > 0) passField.classList.add('weak');
         });
 
-        // Register Logic
+        // 5. Logic Đăng ký
         function handleRegister() {
             const user = document.getElementById('reg-user').value.trim();
             const p1 = passField.value;
             const p2 = document.getElementById('reg-repass').value;
 
-            if(!user || !p1) { showToast("⚠️ Vui lòng nhập đủ thông tin!"); return; }
-            if(userDB.some(u => u.username === user)) {
-                showToast("❌ Tên tài khoản đã tồn tại!");
+            if(!user || !p1) { showToast("⚠️ Thiếu thông tin!"); return; }
+            if(users.some(u => u.username === user)) {
+                showToast("❌ Tài khoản đã tồn tại!");
                 container.classList.add('shake'); setTimeout(() => container.classList.remove('shake'), 400);
                 return;
             }
             if(p1 !== p2) { showToast("❌ Mật khẩu không khớp!"); return; }
 
             const uid = generateUID();
-            userDB.push({ uid, username: user, password: p1 });
-            localStorage.setItem('user_data_tst', JSON.stringify(userDB));
-
-            showToast("✨ ĐĂNG KÝ THÀNH CÔNG! UID: " + uid);
+            users.push({ uid, username: user, password: p1 });
+            localStorage.setItem('user_db_tst', JSON.stringify(users));
+            showToast("✅ Thành công! UID: " + uid);
             setTimeout(() => showForm('login'), 2500);
         }
     </script>
