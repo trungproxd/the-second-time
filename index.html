@@ -6,115 +6,157 @@
     <title>The Second Time - Universe System</title>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* --- RESET & CƠ BẢN --- */
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { margin: 0; padding: 0; background: #0b0e14 url('./cover.jpg') no-repeat center fixed; background-size: cover; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Be Vietnam Pro', sans-serif; color: white; }
-        
-        /* SAO BĂNG */
-        .meteors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .meteor { position: absolute; top: -10px; width: 2px; height: 50px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); transform: rotate(-45deg); animation: shoot 5s linear infinite; }
-        @keyframes shoot { 0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 1; } 100% { top: 110%; transform: translateX(-600px) rotate(-45deg); opacity: 0; } }
+        body { 
+            margin: 0; padding: 0; 
+            background: #0b0e14 url('./cover.jpg') no-repeat center fixed; 
+            background-size: cover; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; overflow: hidden; 
+            font-family: 'Be Vietnam Pro', sans-serif; color: white; 
+        }
 
-        /* KHUNG CHÍNH */
+        /* --- HIỆU ỨNG SAO BĂNG --- */
+        .meteors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .meteor { 
+            position: absolute; top: -10px; width: 2px; height: 60px; 
+            background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); 
+            transform: rotate(-45deg); animation: shoot 5s linear infinite; 
+        }
+        @keyframes shoot { 
+            0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 1; } 
+            100% { top: 110%; transform: translateX(-600px) rotate(-45deg); opacity: 0; } 
+        }
+
+        /* --- CONTAINER CHÍNH --- */
         .container { 
             position: relative; width: 850px; height: 550px; 
             background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(15px); 
-            border: 2px solid rgba(56, 189, 248, 0.5); border-radius: 20px; 
+            border: 2px solid rgba(56, 189, 248, 0.4); border-radius: 24px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.9); z-index: 10; 
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            padding: 40px; box-shadow: 0 0 60px rgba(0,0,0,0.9); z-index: 10; 
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        .logo-box img { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6)); }
+        .logo-box img { 
+            max-width: 280px; margin-bottom: 25px; 
+            filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.6)); 
+            transition: 0.5s;
+        }
 
-        /* NOW PLAYING - GÓC DƯỚI TRÁI */
+        /* --- NOW PLAYING (GÓC TRÁI DƯỚI) --- */
         .music-player-fixed {
-            position: fixed; bottom: 25px; left: 25px; z-index: 100;
+            position: fixed; bottom: 30px; left: 30px; z-index: 100;
             display: none; flex-direction: column; gap: 8px;
-            background: rgba(15, 23, 42, 0.85); padding: 15px 20px;
-            border-radius: 12px; border-left: 4px solid #38bdf8;
-            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(15, 23, 42, 0.9); padding: 15px 22px;
+            border-radius: 14px; border-left: 4px solid #38bdf8;
+            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             border-top: 1px solid rgba(255,255,255,0.1);
         }
-        #music-info { font-size: 11px; color: #38bdf8; letter-spacing: 1.5px; text-transform: uppercase; font-weight: bold; animation: pulse 2s infinite; }
-        #volume-box { display: flex; align-items: center; gap: 10px; }
-        #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 100px; height: 4px; }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
-        /* LOADING */
-        .loading-area { width: 60%; text-align: center; }
-        .bar-bg { width: 100%; height: 10px; background: rgba(0,0,0,0.5); border-radius: 20px; border: 1px solid #475569; overflow: hidden; }
-        #bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); box-shadow: 0 0 15px #38bdf8; }
-        
-        /* NÚT START */
-        #start-btn { 
-            display: none; background: #000; color: #fff; border: 2px solid #38bdf8; 
-            padding: 18px 70px; font-size: 20px; font-weight: 700; cursor: pointer; 
-            letter-spacing: 3px; border-radius: 50px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); 
-            transition: 0.3s;
+        #music-info { 
+            font-size: 11px; color: #38bdf8; letter-spacing: 1.5px; 
+            text-transform: uppercase; font-weight: 700; 
+            animation: pulse 2s infinite; 
         }
-        #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 40px #38bdf8; transform: scale(1.05); }
+        #volume-box { display: flex; align-items: center; gap: 10px; }
+        #volume-box span { font-size: 9px; color: #64748b; font-weight: bold; }
+        #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 90px; height: 4px; }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-        /* GIAO DIỆN FORM ĐẦY ĐỦ */
+        /* --- FORM STYLING --- */
         .auth-form { display: none; width: 100%; max-width: 380px; flex-direction: column; opacity: 0; }
-        .input-group { margin-bottom: 15px; text-align: left; position: relative; }
-        .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
-        .input-group input { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 8px; color: #fff; outline: none; transition: 0.3s; padding-right: 45px; }
+        .input-group { margin-bottom: 20px; text-align: left; position: relative; }
+        .input-group label { 
+            display: flex; justify-content: space-between; 
+            color: #94a3b8; font-size: 11px; margin-bottom: 8px; 
+            text-transform: uppercase; letter-spacing: 1.5px; 
+        }
+        .input-group input { 
+            width: 100%; padding: 13px 15px; background: rgba(0, 0, 0, 0.7); 
+            border: 1px solid #334155; border-radius: 10px; color: #fff; 
+            outline: none; transition: 0.3s; padding-right: 45px; 
+        }
         
-        /* Hiệu ứng Glow cho Input */
-        input.weak { border-color: #ef4444 !important; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
-        input.medium { border-color: #f59e0b !important; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
-        input.strong { border-color: #10b981 !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        /* ĐỘ MẠNH MẬT KHẨU (GLOW COLORS) */
+        input.weak { border-color: #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); }
+        input.medium { border-color: #f59e0b !important; box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
+        input.strong { border-color: #10b981 !important; box-shadow: 0 0 18px rgba(16, 185, 129, 0.5); }
 
-        .eye-icon { position: absolute; right: 15px; top: 32px; cursor: pointer; color: #64748b; font-size: 18px; z-index: 5; }
-        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 5px; border-radius: 4px; }
+        .eye-icon { position: absolute; right: 15px; top: 35px; cursor: pointer; color: #64748b; font-size: 18px; z-index: 5; }
+        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 6px; border-radius: 4px; }
+        .gen-btn:hover { background: #38bdf8; color: #000; }
 
         .confirm-btn { 
-            width: 100%; padding: 15px; background: linear-gradient(135deg, #0f172a, #000); 
-            color: #fff; border: 1px solid #38bdf8; border-radius: 10px; font-weight: 700; 
+            width: 100%; padding: 16px; background: linear-gradient(135deg, #0f172a, #000); 
+            color: #fff; border: 1px solid #38bdf8; border-radius: 12px; font-weight: 700; 
             cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
-            transition: 0.3s; margin-top: 10px;
+            transition: 0.4s; margin-top: 10px;
         }
-        .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); }
+        .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 30px rgba(56, 189, 248, 0.5); transform: translateY(-2px); }
 
-        /* TOAST & SWITCH */
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; }
-        .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #38bdf8; margin-bottom: 10px; transform: translateX(130%); transition: 0.5s; font-size: 12px; }
+        /* --- LOADING AREA --- */
+        .loading-area { width: 60%; text-align: center; }
+        .bar-bg { width: 100%; height: 10px; background: rgba(0,0,0,0.6); border-radius: 20px; border: 1px solid #475569; overflow: hidden; }
+        #bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); box-shadow: 0 0 20px #38bdf8; transition: 0.1s; }
+        #start-btn { 
+            display: none; background: transparent; color: #fff; border: 2px solid #38bdf8; 
+            padding: 20px 80px; font-size: 22px; font-weight: 700; cursor: pointer; 
+            letter-spacing: 4px; border-radius: 60px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.4); 
+            transition: 0.4s;
+        }
+        #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 50px #38bdf8; transform: scale(1.08); }
+
+        /* --- TOAST & UTILS --- */
+        #toast-container { position: fixed; top: 25px; right: 25px; z-index: 1000; }
+        .toast { 
+            background: rgba(15, 23, 42, 0.95); color: #fff; padding: 16px 28px; 
+            border-radius: 12px; border-left: 5px solid #38bdf8; margin-bottom: 12px; 
+            transform: translateX(130%); transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            font-size: 13px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
         .toast.show { transform: translateX(0); }
-        .switch-text { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 12px; }
-        .switch-text b { color: #38bdf8; cursor: pointer; }
-        .credit { position: absolute; bottom: 15px; right: 20px; color: rgba(255, 255, 255, 0.1); font-size: 10px; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .switch-text { margin-top: 25px; text-align: center; color: #94a3b8; font-size: 12px; }
+        .switch-text b { color: #38bdf8; cursor: pointer; transition: 0.3s; }
+        .switch-text b:hover { text-decoration: underline; text-shadow: 0 0 10px #38bdf8; }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-12px); } 75% { transform: translateX(12px); } }
         .shake { animation: shake 0.4s ease-in-out; }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
-    <div class="meteors"><div class="meteor" style="left: 70%"></div><div class="meteor" style="left: 20%; animation-delay: 2.5s;"></div></div>
+    <div class="meteors">
+        <div class="meteor" style="left: 10%; animation-delay: 1s;"></div>
+        <div class="meteor" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="meteor" style="left: 70%; animation-delay: 0s;"></div>
+        <div class="meteor" style="left: 90%; animation-delay: 4.5s;"></div>
+    </div>
 
     <div class="music-player-fixed" id="player-ui">
-        <div id="music-info">🎵 Now Playing: Senbonzakura</div>
+        <div id="music-info">🎵 Now Playing: Senbonzakura (Remix)</div>
         <div id="volume-box">
-            <span style="font-size: 8px; color: #94a3b8; font-weight: bold;">VOL</span>
+            <span>VOL</span>
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
         </div>
     </div>
 
     <div class="container" id="main-container">
-        <div class="logo-box"><img src="./logo.png" alt="Logo"></div>
+        <div class="logo-box" id="logo-box"><img src="./logo.png" alt="Logo"></div>
 
         <div class="loading-area" id="loading-area">
             <div class="bar-bg"><div id="bar-fill"></div></div>
-            <p style="color: #38bdf8; font-size: 11px; margin-top: 12px;">SYSTEM INITIALIZING... <span id="percent">0%</span></p>
+            <p style="color: #38bdf8; font-size: 12px; margin-top: 15px; letter-spacing: 3px;">SYSTEM INITIALIZING... <span id="percent">0%</span></p>
         </div>
 
         <button id="start-btn">NHẤP ĐỂ BẮT ĐẦU</button>
 
         <div id="register-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">ĐĂNG KÝ TÀI KHOẢN</h3>
+            <h2 style="text-align:center; margin-bottom:25px; letter-spacing:5px; color:#fff;">ĐĂNG KÝ</h2>
             <div class="input-group">
                 <label>Tên nhân vật</label>
-                <input type="text" id="reg-user" placeholder="Tên truy cập...">
+                <input type="text" id="reg-user" placeholder="Nhập tên truy cập...">
             </div>
             <div class="input-group">
                 <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">TẠO TỰ ĐỘNG</span></label>
@@ -126,27 +168,26 @@
                 <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu...">
                 <span class="eye-icon" onclick="togglePass('reg-repass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="handleRegister()">Khởi Tạo Ký Ức</button>
-            <div class="switch-text">Đã có tài khoản? <b onclick="showForm('login')">Đăng nhập ngay</b></div>
+            <button class="confirm-btn" onclick="handleRegister()">KHỞI TẠO KÝ ỨC</button>
+            <div class="switch-text">Đã có tài khoản hệ thống? <b onclick="showForm('login')">Đăng nhập ngay</b></div>
         </div>
 
         <div id="login-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">ĐĂNG NHẬP</h3>
+            <h2 style="text-align:center; margin-bottom:25px; letter-spacing:5px; color:#fff;">ĐĂNG NHẬP</h2>
             <div class="input-group">
                 <label>Username</label>
-                <input type="text" id="login-user" placeholder="Nhập tên...">
+                <input type="text" id="login-user" placeholder="Tên tài khoản...">
             </div>
             <div class="input-group">
                 <label>Password</label>
-                <input type="password" id="login-pass" placeholder="Nhập mật khẩu...">
+                <input type="password" id="login-pass" placeholder="Mật khẩu...">
                 <span class="eye-icon" onclick="togglePass('login-pass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="showToast('Hệ thống đang đồng bộ...')">Vào Game</button>
-            <div class="switch-text">Người mới? <b onclick="showForm('register')">Đăng ký tại đây</b></div>
+            <button class="confirm-btn" onclick="handleLogin()">VÀO UNIVERSE</button>
+            <div class="switch-text">Chưa có dữ liệu? <b onclick="showForm('register')">Đăng ký tại đây</b></div>
         </div>
     </div>
 
-    <div class="credit">THE SECOND TIME | BY KBG</div>
     <audio id="bgm" loop src="./bgm.mp3"></audio>
 
     <script>
@@ -158,93 +199,144 @@
         const loginForm = document.getElementById('login-form');
         const bgm = document.getElementById('bgm');
         const volSlider = document.getElementById('volume-slider');
-        const passInput = document.getElementById('reg-pass');
+        const regPassInput = document.getElementById('reg-pass');
 
-        // Loading
+        // --- HỆ THỐNG DATABASE ---
+        let users = JSON.parse(localStorage.getItem('TST_DATABASE')) || [];
+
+        // --- HIỆU ỨNG LOADING ---
         let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 5) + 2;
+        const loadingInterval = setInterval(() => {
+            progress += Math.floor(Math.random() * 4) + 1;
             if (progress >= 100) {
-                progress = 100; clearInterval(interval);
-                loadingArea.style.display = 'none'; startBtn.style.display = 'block';
+                progress = 100;
+                clearInterval(loadingInterval);
+                loadingArea.style.opacity = '0';
+                setTimeout(() => {
+                    loadingArea.style.display = 'none';
+                    startBtn.style.display = 'block';
+                }, 500);
             }
             document.getElementById('bar-fill').style.width = progress + '%';
             document.getElementById('percent').innerText = progress + '%';
-        }, 100);
+        }, 60);
 
-        // Start
+        // --- SỰ KIỆN BẮT ĐẦU ---
         startBtn.onclick = () => {
-            startBtn.style.display = 'none';
-            playerUI.style.display = 'flex';
-            bgm.volume = 0.5;
-            bgm.play();
-            container.style.width = '420px';
-            container.style.height = 'auto';
+            startBtn.style.opacity = '0';
             setTimeout(() => {
-                regForm.style.display = 'flex';
-                setTimeout(() => regForm.style.opacity = '1', 50);
-            }, 400);
+                startBtn.style.display = 'none';
+                playerUI.style.display = 'flex';
+                bgm.volume = 0.5;
+                bgm.play().catch(() => showToast("Vui lòng tương tác để phát nhạc!"));
+                
+                // Thu nhỏ container và hiện form
+                container.style.width = '450px';
+                container.style.height = 'auto';
+                container.style.padding = '50px 40px';
+                
+                setTimeout(() => {
+                    regForm.style.display = 'flex';
+                    setTimeout(() => regForm.style.opacity = '1', 50);
+                }, 500);
+            }, 300);
         };
 
-        volSlider.oninput = (e) => { bgm.volume = e.target.value; };
+        // --- XỬ LÝ MÀU SẮC MẬT KHẨU ---
+        regPassInput.addEventListener('input', () => {
+            const val = regPassInput.value;
+            regPassInput.classList.remove('weak', 'medium', 'strong');
+            
+            if (val.length === 0) return;
+            
+            if (val.length >= 8 && /[A-Z]/.test(val) && /[0-9]/.test(val)) {
+                regPassInput.classList.add('strong');
+            } else if (val.length >= 6) {
+                regPassInput.classList.add('medium');
+            } else {
+                regPassInput.classList.add('weak');
+            }
+        });
 
-        // Database & Logic
-        let users = JSON.parse(localStorage.getItem('user_db_tst')) || [];
-
-        function showForm(type) {
-            regForm.style.display = 'none'; loginForm.style.display = 'none';
-            const target = (type === 'login') ? loginForm : regForm;
-            target.style.display = 'flex'; setTimeout(() => target.style.opacity = '1', 50);
-        }
-
+        // --- CÁC HÀM TIỆN ÍCH ---
         function togglePass(id) {
             const input = document.getElementById(id);
-            input.type = (input.type === 'password') ? 'text' : 'password';
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function showForm(type) {
+            regForm.style.opacity = '0';
+            loginForm.style.opacity = '0';
+            setTimeout(() => {
+                regForm.style.display = 'none';
+                loginForm.style.display = 'none';
+                const target = (type === 'login') ? loginForm : regForm;
+                target.style.display = 'flex';
+                setTimeout(() => target.style.opacity = '1', 50);
+            }, 300);
+        }
+
+        function autoGenPass() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+            let pass = "S"; 
+            for(let i=0; i<9; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            regPassInput.value = pass;
+            document.getElementById('reg-repass').value = pass;
+            regPassInput.dispatchEvent(new Event('input')); // Cập nhật màu xanh
+            showToast("Đã tạo mật khẩu bảo mật!");
         }
 
         function showToast(msg) {
-            const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg;
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.innerText = msg;
             document.getElementById('toast-container').appendChild(t);
             setTimeout(() => t.classList.add('show'), 100);
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 4000);
+            setTimeout(() => {
+                t.classList.remove('show');
+                setTimeout(() => t.remove(), 500);
+            }, 4000);
         }
 
-        // Mật khẩu tự động & Kiểm tra độ mạnh
-        function autoGenPass() {
-            const res = "S" + Math.random().toString(36).slice(-8).toUpperCase() + "!";
-            passInput.value = res;
-            document.getElementById('reg-repass').value = res;
-            passInput.classList.add('strong');
-            showToast("Đã tạo mật khẩu mạnh!");
-        }
-
-        passInput.addEventListener('input', () => {
-            const v = passInput.value;
-            passInput.classList.remove('weak', 'medium', 'strong');
-            if(v.length >= 8 && /[A-Z]/.test(v)) passInput.classList.add('strong');
-            else if(v.length >= 6) passInput.classList.add('medium');
-            else if(v.length > 0) passInput.classList.add('weak');
-        });
-
+        // --- LOGIC ĐĂNG KÝ (UID 20 + CHỐNG TRÙNG) ---
         function handleRegister() {
             const user = document.getElementById('reg-user').value.trim();
-            const p1 = passInput.value;
+            const p1 = regPassInput.value;
             const p2 = document.getElementById('reg-repass').value;
 
-            if(!user || !p1) { showToast("⚠️ Vui lòng nhập đủ thông tin!"); return; }
-            if(users.some(u => u.username === user)) {
-                showToast("❌ Tên tài khoản đã tồn tại!");
-                container.classList.add('shake'); setTimeout(() => container.classList.remove('shake'), 400);
+            if (!user || !p1) { showToast("⚠️ Không được để trống thông tin!"); return; }
+            if (p1 !== p2) { showToast("❌ Mật khẩu xác nhận không khớp!"); return; }
+            if (users.some(u => u.username === user)) {
+                showToast("❌ Tên tài khoản này đã tồn tại!");
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
                 return;
             }
-            if(p1 !== p2) { showToast("❌ Mật khẩu không khớp!"); return; }
 
             const uid = Array.from({length: 20}, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random()*36)]).join('');
             users.push({ uid, username: user, password: p1 });
-            localStorage.setItem('user_db_tst', JSON.stringify(users));
+            localStorage.setItem('TST_DATABASE', JSON.stringify(users));
+
             showToast("✅ Đăng ký thành công! UID: " + uid);
-            setTimeout(() => showForm('login'), 2500);
+            setTimeout(() => showForm('login'), 2000);
         }
+
+        // --- LOGIC ĐĂNG NHẬP ---
+        function handleLogin() {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            const found = users.find(u => u.username === user && u.password === pass);
+            if (found) {
+                showToast("🚀 Chào mừng " + user + " đã quay trở lại!");
+            } else {
+                showToast("❌ Thông tin đăng nhập không chính xác!");
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+            }
+        }
+
+        volSlider.oninput = (e) => { bgm.volume = e.target.value; };
     </script>
 </body>
 </html>
