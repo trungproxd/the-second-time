@@ -17,36 +17,36 @@
         /* KHUNG CHÍNH */
         .container { 
             position: relative; width: 850px; height: 550px; 
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(15px); 
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(15px); 
             border: 2px solid rgba(56, 189, 248, 0.5); border-radius: 20px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.8); z-index: 10; 
+            padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.9); z-index: 10; 
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        .logo-box img { max-width: 300px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.5)); }
+        .logo-box img { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6)); }
 
-        /* LOADING */
+        /* LOADING AREA */
         .loading-area { width: 60%; text-align: center; }
         .bar-bg { width: 100%; height: 10px; background: rgba(0,0,0,0.5); border-radius: 20px; border: 1px solid #475569; overflow: hidden; }
         #bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); box-shadow: 0 0 15px #38bdf8; }
         
-        /* NÚT BẮT ĐẦU */
+        /* NÚT START */
         #start-btn { 
             display: none; position: relative; background: #000; color: #fff; 
             border: 2px solid #38bdf8; padding: 18px 70px; font-size: 20px; font-weight: 700; 
             cursor: pointer; overflow: hidden; letter-spacing: 3px; border-radius: 50px;
             box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); transition: 0.3s;
         }
-        #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 40px #38bdf8; }
+        #start-btn:hover { background: #38bdf8; color: #000; box-shadow: 0 0 40px #38bdf8; transform: scale(1.05); }
 
-        /* AUTH FORMS */
+        /* FORM GIAO DIỆN */
         .auth-form { display: none; width: 100%; max-width: 380px; flex-direction: column; opacity: 0; }
         .input-group { margin-bottom: 15px; text-align: left; position: relative; }
         .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
         .input-group input { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 8px; color: #fff; outline: none; transition: 0.3s; padding-right: 45px; }
         
-        /* Password Glow */
+        /* Hiệu ứng độ mạnh mật khẩu */
         input.weak { border-color: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
         input.medium { border-color: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
         input.strong { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
@@ -54,7 +54,6 @@
         .eye-icon { position: absolute; right: 15px; top: 32px; cursor: pointer; color: #64748b; font-size: 18px; transition: 0.3s; }
         .eye-icon:hover { color: #38bdf8; }
 
-        /* NÚT XÁC NHẬN FIX ĐẸP */
         .confirm-btn { 
             position: relative; width: 100%; padding: 15px; background: linear-gradient(135deg, #0f172a, #000); 
             color: #fff; border: 1px solid #38bdf8; border-radius: 10px; font-weight: 700; 
@@ -63,73 +62,74 @@
         }
         .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); transform: translateY(-3px); }
 
-        /* TOAST NOTIFICATION */
+        /* THÔNG BÁO TOAST */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; }
         .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #38bdf8; box-shadow: 0 10px 40px rgba(0,0,0,0.6); margin-bottom: 10px; transform: translateX(130%); transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); font-weight: 600; font-size: 13px; }
         .toast.show { transform: translateX(0); }
 
         .switch-text { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 12px; }
-        .switch-text b { color: #38bdf8; cursor: pointer; text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s; }
-        .switch-text b:hover { border-bottom: 1px solid #38bdf8; }
+        .switch-text b { color: #38bdf8; cursor: pointer; transition: 0.3s; }
+        .switch-text b:hover { text-decoration: underline; }
         
-        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; }
-        .gen-btn:hover { text-decoration: underline; }
+        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 5px; border-radius: 4px; }
+        .gen-btn:hover { background: #38bdf8; color: #000; }
 
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
         .shake { animation: shake 0.4s ease-in-out; }
+        .credit { position: absolute; bottom: 15px; right: 20px; color: rgba(255, 255, 255, 0.2); font-size: 10px; }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
-    <div class="meteors"><div class="meteor" style="left: 70%"></div><div class="meteor" style="left: 30%; animation-delay: 3s;"></div></div>
+    <div class="meteors"><div class="meteor" style="left: 70%"></div><div class="meteor" style="left: 20%; animation-delay: 2.5s;"></div></div>
 
     <div class="container" id="main-container">
         <div class="logo-box"><img src="./logo.png" alt="Logo"></div>
 
         <div class="loading-area" id="loading-area">
             <div class="bar-bg"><div id="bar-fill"></div></div>
-            <p style="color: #38bdf8; font-size: 11px; margin-top: 12px; letter-spacing: 2px;">SYNCHRONIZING... <span id="percent">0%</span></p>
+            <p style="color: #38bdf8; font-size: 11px; margin-top: 12px; letter-spacing: 2px;">SYNCHRONIZING SYSTEM... <span id="percent">0%</span></p>
         </div>
 
         <button id="start-btn">NHẤP ĐỂ BẮT ĐẦU</button>
 
         <div id="register-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px; color:#fff;">TẠO NHÂN VẬT</h3>
+            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">KHỞI TẠO DỮ LIỆU</h3>
             <div class="input-group">
                 <label>Tên tài khoản</label>
-                <input type="text" id="reg-user" placeholder="Tên truy cập...">
+                <input type="text" id="reg-user" placeholder="Nhập tên nhân vật...">
             </div>
             <div class="input-group">
-                <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">[TẠO TỰ ĐỘNG]</span></label>
-                <input type="password" id="reg-pass" placeholder="Ít nhất 8 ký tự...">
+                <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">TẠO MẬT KHẨU</span></label>
+                <input type="password" id="reg-pass" placeholder="Tối thiểu 8 ký tự...">
                 <span class="eye-icon" onclick="togglePass('reg-pass')">👁</span>
             </div>
             <div class="input-group">
-                <label>Nhập lại mật khẩu</label>
-                <input type="password" id="reg-repass" placeholder="Xác nhận lại...">
+                <label>Xác nhận lại mật khẩu</label>
+                <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu...">
                 <span class="eye-icon" onclick="togglePass('reg-repass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="handleRegister()">Xác Nhận Đăng Ký</button>
-            <div class="switch-text">Đã có ký ức? <b onclick="showForm('login')">Đăng nhập ngay</b></div>
+            <button class="confirm-btn" onclick="handleRegister()">Đăng Ký Thành Viên</button>
+            <div class="switch-text">Bạn đã có tài khoản? <b onclick="showForm('login')">Đăng nhập ngay</b></div>
         </div>
 
         <div id="login-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px; color:#fff;">KẾT NỐI</h3>
+            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">TRUY CẬP VŨ TRỤ</h3>
             <div class="input-group"><label>Tên tài khoản</label><input type="text" id="login-user"></div>
             <div class="input-group">
                 <label>Mật khẩu</label>
                 <input type="password" id="login-pass">
                 <span class="eye-icon" onclick="togglePass('login-pass')">👁</span>
             </div>
-            <button class="confirm-btn" onclick="showToast('Hệ thống đang đồng bộ dữ liệu...')">Vào Game</button>
-            <div class="switch-text">Người mới? <b onclick="showForm('register')">Đăng ký tại đây</b></div>
+            <button class="confirm-btn" onclick="showToast('Hệ thống đang đồng bộ hóa...')">Vào Game</button>
+            <div class="switch-text">Người mới đến? <b onclick="showForm('register')">Đăng ký tại đây</b></div>
         </div>
     </div>
 
-    <div class="credit">PROJECT: THE SECOND TIME | KBG</div>
+    <div class="credit">THE SECOND TIME | VERSION 2.0 | BY KBG</div>
 
-    <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    <audio id="bgm" loop src="./bgm.mp3"></audio>
 
     <script>
         const container = document.getElementById('main-container');
@@ -139,10 +139,10 @@
         const loginForm = document.getElementById('login-form');
         const bgm = document.getElementById('bgm');
 
-        // 1. Xử lý Loading
+        // 1. Logic Loading mượt mà
         let progress = 0;
         const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 6) + 2;
+            progress += Math.floor(Math.random() * 5) + 2;
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
@@ -153,10 +153,10 @@
             document.getElementById('percent').innerText = progress + '%';
         }, 80);
 
-        // 2. Chuyển Form & Nhạc
+        // 2. Nút Bắt đầu & Nhạc nền
         startBtn.onclick = () => {
             startBtn.style.display = 'none';
-            bgm.play().catch(() => console.log("Yêu cầu tương tác người dùng để phát nhạc"));
+            bgm.play().catch(() => console.log("Cần tương tác người dùng để phát nhạc"));
             container.style.width = '420px';
             container.style.height = 'auto';
             setTimeout(() => {
@@ -165,27 +165,27 @@
             }, 400);
         };
 
+        // 3. Database ảo (LocalStorage) & UID 20 ký tự
+        let userDB = JSON.parse(localStorage.getItem('user_data_tst')) || [];
+
+        function generateUID() {
+            const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let uid = '';
+            for(let i=0; i<20; i++) uid += charset.charAt(Math.floor(Math.random() * charset.length));
+            return uid;
+        }
+
         function showForm(type) {
             regForm.style.display = 'none'; regForm.style.opacity = '0';
             loginForm.style.display = 'none'; loginForm.style.opacity = '0';
-            const target = type === 'login' ? loginForm : regForm;
+            const target = (type === 'login') ? loginForm : regForm;
             target.style.display = 'flex';
             setTimeout(() => target.style.opacity = '1', 50);
         }
 
-        // 3. Database & UID Logic
-        let users = JSON.parse(localStorage.getItem('the_second_time_db')) || [];
-
-        function generateUID() {
-            const pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let uid = '';
-            for(let i=0; i<20; i++) uid += pool.charAt(Math.floor(Math.random() * pool.length));
-            return uid;
-        }
-
         function togglePass(id) {
             const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
+            input.type = (input.type === 'password') ? 'text' : 'password';
         }
 
         function showToast(msg) {
@@ -197,67 +197,55 @@
             setTimeout(() => {
                 t.classList.remove('show');
                 setTimeout(() => t.remove(), 500);
-            }, 4000);
+            }, 4500);
         }
 
-        // 4. Mật khẩu tự động & Kiểm tra độ mạnh
-        const pass = document.getElementById('reg-pass');
+        // 4. Tạo mật khẩu tự động & Check độ mạnh
+        const passField = document.getElementById('reg-pass');
         function autoGenPass() {
-            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-            let retVal = "";
-            retVal += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random()*26)]; // Đảm bảo có chữ hoa
-            for (let i = 0; i < 9; ++i) retVal += charset.charAt(Math.floor(Math.random() * charset.length));
-            pass.value = retVal;
-            document.getElementById('reg-repass').value = retVal;
-            pass.classList.add('strong');
-            showToast("Đã tạo mật khẩu mạnh!");
+            const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$";
+            let result = "A" + Math.random().toString(36).slice(-9) + "!"; // Đảm bảo có chữ hoa & ký tự
+            passField.value = result;
+            document.getElementById('reg-repass').value = result;
+            passField.classList.add('strong');
+            showToast("Đã tạo mật khẩu mạnh ngẫu nhiên!");
         }
 
-        pass.addEventListener('input', () => {
-            const v = pass.value;
-            pass.classList.remove('weak', 'medium', 'strong');
-            if(v.length >= 8 && /[A-Z]/.test(v) && /[!@#$%^&*]/.test(v)) pass.classList.add('strong');
-            else if(v.length >= 6) pass.classList.add('medium');
-            else if(v.length > 0) pass.classList.add('weak');
+        passField.addEventListener('input', () => {
+            const v = passField.value;
+            passField.classList.remove('weak', 'medium', 'strong');
+            if(v.length >= 8 && /[A-Z]/.test(v) && /[0-9]/.test(v)) passField.classList.add('strong');
+            else if(v.length >= 6) passField.classList.add('medium');
+            else if(v.length > 0) passField.classList.add('weak');
         });
 
-        // 5. Xử lý Đăng ký
+        // 5. Xử lý Đăng ký & Kiểm tra trùng tên
         function handleRegister() {
-            const username = document.getElementById('reg-user').value.trim();
-            const p1 = pass.value;
+            const user = document.getElementById('reg-user').value.trim();
+            const p1 = passField.value;
             const p2 = document.getElementById('reg-repass').value;
 
-            if(!username || !p1) {
-                showToast("⚠️ Vui lòng điền đầy đủ thông tin!");
-                return;
-            }
+            if(!user || !p1) { showToast("⚠️ Vui lòng nhập đủ thông tin!"); return; }
 
-            // Chống trùng tên
-            if(users.some(u => u.username === username)) {
-                showToast("❌ Tên tài khoản này đã được sử dụng!");
+            // Chống trùng tên trong Database ảo
+            if(userDB.some(u => u.username === user)) {
+                showToast("❌ Tên tài khoản đã tồn tại!");
                 container.classList.add('shake');
                 setTimeout(() => container.classList.remove('shake'), 400);
                 return;
             }
 
-            if(p1 !== p2) {
-                showToast("❌ Mật khẩu xác nhận không chính xác!");
-                return;
-            }
+            if(p1 !== p2) { showToast("❌ Mật khẩu xác nhận không khớp!"); return; }
+            if(p1.length < 8) { showToast("⚠️ Mật khẩu phải có ít nhất 8 ký tự!"); return; }
 
-            if(p1.length < 8) {
-                showToast("⚠️ Mật khẩu cần ít nhất 8 ký tự!");
-                return;
-            }
+            const newUID = generateUID();
+            userDB.push({ uid: newUID, username: user, password: p1 });
+            localStorage.setItem('user_data_tst', JSON.stringify(userDB));
 
-            const uid = generateUID();
-            users.push({ uid, username, password: p1 });
-            localStorage.setItem('the_second_time_db', JSON.stringify(users));
-
-            showToast("✅ Đăng ký thành công! UID của bạn: " + uid);
-            console.log("Database hiện tại:", users);
+            showToast("✨ ĐĂNG KÝ THÀNH CÔNG! UID: " + newUID);
+            console.log("Danh sách User:", userDB);
             
-            setTimeout(() => showForm('login'), 2500);
+            setTimeout(() => showForm('login'), 3000);
         }
     </script>
 </body>
