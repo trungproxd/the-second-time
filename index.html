@@ -6,7 +6,7 @@
     <title>The Second Time - Universe System</title>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- NỀN VÀ GIAO DIỆN TỔNG THỂ --- */
+        /* --- RESET & NỀN --- */
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { 
             margin: 0; padding: 0; background: #0b0e14 url('./cover.jpg') no-repeat center fixed; 
@@ -14,146 +14,147 @@
             height: 100vh; overflow: hidden; font-family: 'Be Vietnam Pro', sans-serif; color: white; 
         }
 
-        /* --- HIỆU ỨNG SAO BĂNG --- */
+        /* --- SAO BĂNG --- */
         .meteors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .meteor { position: absolute; top: -10px; width: 2px; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); transform: rotate(-45deg); animation: shoot 5s linear infinite; }
         @keyframes shoot { 0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 1; } 100% { top: 110%; transform: translateX(-600px) rotate(-45deg); opacity: 0; } }
 
-        /* --- PLAYER NHẠC GÓC TRÁI --- */
-        .music-player-fixed {
-            position: fixed; bottom: 30px; left: 30px; z-index: 100;
-            display: none; flex-direction: column; gap: 8px;
-            background: rgba(15, 23, 42, 0.9); padding: 15px 22px;
-            border-radius: 14px; border-left: 4px solid #38bdf8;
-            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        }
-        #music-info { font-size: 11px; color: #38bdf8; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; animation: pulse 2s infinite; }
-        #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 90px; height: 4px; }
-        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-
-        /* --- CONTAINER CHÍNH (Đã fix lệch) --- */
+        /* --- CONTAINER CHÍNH --- */
         .container { 
-            position: relative; width: 450px; min-height: 580px; 
-            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(20px); 
-            border: 2px solid rgba(56, 189, 248, 0.4); border-radius: 24px; 
+            position: relative; width: 440px; min-height: 580px; 
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(25px); 
+            border: 2px solid rgba(56, 189, 248, 0.4); border-radius: 28px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 40px; box-shadow: 0 0 60px rgba(0,0,0,0.9); z-index: 10; 
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 45px; box-shadow: 0 0 80px rgba(0,0,0,0.8); z-index: 10; 
+            transition: all 0.5s ease;
         }
 
-        /* --- FORM STYLING --- */
+        /* --- LOADING TO & ĐẸP --- */
+        #loading-area { width: 100%; text-align: center; }
+        .loading-bar-container { 
+            width: 100%; height: 14px; /* Làm to hơn */
+            background: rgba(0,0,0,0.5); border-radius: 20px; 
+            overflow: hidden; border: 1px solid #334155; margin-bottom: 15px;
+        }
+        #bar-fill { 
+            width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); 
+            box-shadow: 0 0 15px #38bdf8; transition: 0.2s; 
+        }
+        .loading-text { color: #38bdf8; font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; }
+
+        /* --- FORM LAYOUT --- */
         .auth-form { display: none; width: 100%; flex-direction: column; opacity: 0; transition: 0.5s; }
-        .input-group { margin-bottom: 20px; text-align: left; width: 100%; }
-        .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
-        
+        .auth-form.active { display: flex; opacity: 1; }
+
+        .input-group { margin-bottom: 22px; width: 100%; }
+        .input-label-row { 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            margin-bottom: 10px; 
+        }
+        .input-label-row label { color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+
         .input-wrapper { position: relative; width: 100%; }
         .input-wrapper input { 
-            width: 100%; padding: 14px 15px; background: rgba(0, 0, 0, 0.7); 
+            width: 100%; padding: 15px 18px; background: rgba(0, 0, 0, 0.6); 
             border: 1px solid #334155; border-radius: 12px; color: #fff; 
-            outline: none; transition: 0.3s; padding-right: 45px;
+            outline: none; transition: 0.3s; font-size: 15px; padding-right: 50px;
         }
+        .input-wrapper input:focus { border-color: #38bdf8; background: rgba(0, 0, 0, 0.8); }
 
-        /* ĐỘ MẠNH MẬT KHẨU */
-        input.weak { border-color: #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); }
-        input.medium { border-color: #f59e0b !important; box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); }
-        input.strong { border-color: #10b981 !important; box-shadow: 0 0 18px rgba(16, 185, 129, 0.4); }
+        /* Icon to và rõ hơn */
+        .eye-icon { 
+            position: absolute; right: 18px; top: 50%; transform: translateY(-50%); 
+            cursor: pointer; color: #64748b; font-size: 20px; transition: 0.3s; 
+        }
+        .eye-icon:hover { color: #38bdf8; }
 
-        .eye-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #64748b; font-size: 18px; z-index: 5; }
-        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 6px; border-radius: 4px; }
+        .gen-btn { 
+            color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; 
+            border: 1px solid #38bdf8; padding: 4px 8px; border-radius: 6px; 
+            text-transform: uppercase; transition: 0.3s;
+        }
+        .gen-btn:hover { background: rgba(56, 189, 248, 0.1); }
 
         .confirm-btn { 
-            width: 100%; padding: 16px; background: linear-gradient(135deg, #0f172a, #000); 
-            color: #fff; border: 1px solid #38bdf8; border-radius: 12px; font-weight: 700; 
+            width: 100%; padding: 18px; background: linear-gradient(135deg, #0f172a, #000); 
+            color: #fff; border: 1px solid #38bdf8; border-radius: 14px; font-weight: 700; 
             cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.4s; margin-top: 10px;
         }
-        .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 30px rgba(56, 189, 248, 0.5); }
+        .confirm-btn:hover { box-shadow: 0 0 25px rgba(56, 189, 248, 0.4); border-color: #fff; }
 
-        /* --- VIDEO INTRO OVERLAY --- */
+        /* --- VIDEO OVERLAY --- */
         #video-intro-container {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000; z-index: 10000; justify-content: center; align-items: center; opacity: 0; transition: 1s;
         }
         #intro-video { width: 100%; height: 100%; object-fit: cover; }
-        .skip-btn { position: absolute; bottom: 30px; right: 30px; color: #fff; border: 1px solid #fff; padding: 10px 20px; cursor: pointer; z-index: 10001; background: rgba(0,0,0,0.5); border-radius: 5px; font-size: 12px; }
-
-        /* --- GAME UI --- */
-        #game-interface {
-            display: none; width: 90%; max-width: 1100px; height: 80vh;
-            background: rgba(10, 15, 25, 0.85); backdrop-filter: blur(20px);
-            border: 1px solid #38bdf8; border-radius: 24px; padding: 40px;
-            flex-direction: column; opacity: 0; transition: 1.5s; z-index: 50;
-        }
-
-        /* --- TOAST --- */
-        #toast-container { position: fixed; top: 25px; right: 25px; z-index: 10002; }
-        .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 5px solid #38bdf8; margin-bottom: 10px; transform: translateX(130%); transition: 0.5s; }
-        .toast.show { transform: translateX(0); }
     </style>
 </head>
 <body>
 
-    <div id="toast-container"></div>
     <div class="meteors">
         <div class="meteor" style="left: 15%; animation-delay: 1s;"></div>
-        <div class="meteor" style="left: 75%; animation-delay: 3s;"></div>
-    </div>
-
-    <div class="music-player-fixed" id="player-ui">
-        <div id="music-info">🎵 BGM: Senbonzakura</div>
-        <div id="volume-box"><input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5"></div>
+        <div class="meteor" style="left: 80%; animation-delay: 2.5s;"></div>
     </div>
 
     <div class="container" id="main-container">
-        <div id="logo-box"><img src="./logo.png" style="max-width: 250px; margin-bottom: 20px;"></div>
+        <img src="./logo.png" style="max-width: 220px; margin-bottom: 30px;" alt="Logo">
         
-        <div id="loading-area" style="width: 80%; text-align: center;">
-            <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; border: 1px solid #334155;">
-                <div id="bar-fill" style="width: 0%; height: 100%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8; transition: 0.1s;"></div>
+        <div id="loading-area">
+            <div class="loading-bar-container">
+                <div id="bar-fill"></div>
             </div>
-            <p style="color: #38bdf8; font-size: 10px; margin-top: 12px; letter-spacing: 2px;">INITIALIZING... <span id="percent">0%</span></p>
+            <div class="loading-text">Initializing System... <span id="percent">0%</span></div>
         </div>
 
-        <button id="start-btn" style="display: none; background: transparent; color: #fff; border: 2px solid #38bdf8; padding: 15px 50px; font-size: 16px; font-weight: 700; cursor: pointer; border-radius: 50px; letter-spacing: 3px;">KHỞI ĐỘNG HỆ THỐNG</button>
+        <button id="start-btn" style="display: none; background: transparent; color: #fff; border: 2px solid #38bdf8; padding: 15px 50px; font-size: 16px; font-weight: 700; cursor: pointer; border-radius: 50px; letter-spacing: 2px;">BẮT ĐẦU TRẢI NGHIỆM</button>
 
         <div id="register-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">ĐĂNG KÝ</h3>
+            <h3 style="text-align:center; margin-bottom:25px; letter-spacing:4px; color:#38bdf8;">ĐĂNG KÝ</h3>
+            
             <div class="input-group">
-                <label>Tên nhân vật</label>
+                <div class="input-label-row"><label>Tên nhân vật</label></div>
                 <div class="input-wrapper"><input type="text" id="reg-user" placeholder="Tên truy cập..."></div>
             </div>
+
             <div class="input-group">
-                <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">TẠO TỰ ĐỘNG</span></label>
+                <div class="input-label-row">
+                    <label>Mật khẩu</label>
+                    <span class="gen-btn" onclick="autoGen()">Tạo tự động</span>
+                </div>
                 <div class="input-wrapper">
                     <input type="password" id="reg-pass" placeholder="Mật khẩu...">
                     <span class="eye-icon" onclick="togglePass('reg-pass')">👁</span>
                 </div>
             </div>
+
             <div class="input-group">
-                <label>Xác nhận lại</label>
+                <div class="input-label-row"><label>Xác nhận ký ức</label></div>
                 <div class="input-wrapper">
-                    <input type="password" id="reg-repass" placeholder="Nhập lại...">
+                    <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu...">
                     <span class="eye-icon" onclick="togglePass('reg-repass')">👁</span>
                 </div>
             </div>
+
             <button class="confirm-btn" onclick="handleRegister()">Khởi Tạo Ký Ức</button>
-            <p style="text-align:center; font-size:12px; margin-top:20px;">Đã có tài khoản? <b style="color:#38bdf8; cursor:pointer;" onclick="showForm('login')">Đăng nhập</b></p>
+            <p style="text-align:center; font-size:13px; margin-top:20px; color:#94a3b8;">Đã có tài khoản? <b style="color:#38bdf8; cursor:pointer;" onclick="showForm('login')">Đăng nhập</b></p>
         </div>
 
         <div id="login-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px; letter-spacing:3px;">ĐĂNG NHẬP</h3>
+            <h3 style="text-align:center; margin-bottom:25px; letter-spacing:4px; color:#38bdf8;">ĐĂNG NHẬP</h3>
             <div class="input-group">
-                <label>Tên tài khoản</label>
-                <div class="input-wrapper"><input type="text" id="login-user" placeholder="Username..."></div>
+                <div class="input-label-row"><label>Tài khoản</label></div>
+                <div class="input-wrapper"><input type="text" id="login-user" placeholder="Nhập tên tài khoản..."></div>
             </div>
             <div class="input-group">
-                <label>Mật khẩu</label>
+                <div class="input-label-row"><label>Mật mã</label></div>
                 <div class="input-wrapper">
-                    <input type="password" id="login-pass" placeholder="Password...">
+                    <input type="password" id="login-pass" placeholder="Nhập mật khẩu...">
                     <span class="eye-icon" onclick="togglePass('login-pass')">👁</span>
                 </div>
             </div>
             <button class="confirm-btn" onclick="handleLogin()">Vào Universe</button>
-            <p style="text-align:center; font-size:12px; margin-top:20px;">Người mới? <b style="color:#38bdf8; cursor:pointer;" onclick="showForm('register')">Đăng ký ngay</b></p>
+            <p style="text-align:center; font-size:13px; margin-top:20px; color:#94a3b8;">Chưa có tài khoản? <b style="color:#38bdf8; cursor:pointer;" onclick="showForm('register')">Đăng ký</b></p>
         </div>
     </div>
 
@@ -161,138 +162,76 @@
         <video id="intro-video" playsinline>
             <source src="./intro.mp4" type="video/mp4">
         </video>
-        <div class="skip-btn" onclick="finishIntro()">BỎ QUA INTRO</div>
     </div>
-
-    <div id="game-interface">
-        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(56,189,248,0.3); padding-bottom: 20px;">
-            <div>
-                <h2 id="display-name" style="margin:0; color:#38bdf8; text-shadow: 0 0 10px #38bdf8;">PLAYER</h2>
-                <span id="display-uid" style="font-size:11px; color:#64748b;">UID: 0000-0000...</span>
-            </div>
-            <div style="color:#10b981; font-weight:bold;">● ONLINE</div>
-        </div>
-        <div style="flex:1; display:flex; justify-content:center; align-items:center; color:#94a3b8;">
-            <h3>CHÀO MỪNG BẠN ĐÃ TRỞ LẠI VỚI VŨ TRỤ</h3>
-        </div>
-    </div>
-
-    <audio id="bgm" loop src="./bgm.mp3"></audio>
 
     <script>
-        let users = JSON.parse(localStorage.getItem('TST_DATABASE')) || [];
-        let curUser = null;
-
-        // 1. LOADING
+        // --- 1. LOADING LOGIC ---
         let prg = 0;
-        const inv = setInterval(() => {
-            prg += Math.floor(Math.random() * 5) + 2;
-            if (prg >= 100) { 
-                prg = 100; clearInterval(inv); 
-                document.getElementById('loading-area').style.display = 'none'; 
-                document.getElementById('start-btn').style.display = 'block'; 
-            }
-            document.getElementById('bar-fill').style.width = prg + '%';
-            document.getElementById('percent').innerText = prg + '%';
-        }, 70);
+        const barFill = document.getElementById('bar-fill');
+        const percentTxt = document.getElementById('percent');
+        const loadingArea = document.getElementById('loading-area');
+        const startBtn = document.getElementById('start-btn');
 
-        // 2. START
-        document.getElementById('start-btn').onclick = () => {
-            document.getElementById('start-btn').style.display = 'none';
-            document.getElementById('player-ui').style.display = 'flex';
-            const bgm = document.getElementById('bgm');
-            bgm.volume = 0.5; bgm.play().catch(() => {});
+        const loadingInterval = setInterval(() => {
+            prg += Math.floor(Math.random() * 4) + 1;
+            if (prg >= 100) {
+                prg = 100;
+                clearInterval(loadingInterval);
+                setTimeout(() => {
+                    loadingArea.style.display = 'none';
+                    startBtn.style.display = 'block';
+                }, 500);
+            }
+            barFill.style.width = prg + '%';
+            percentTxt.innerText = prg + '%';
+        }, 50);
+
+        // --- 2. SWITCH FORMS ---
+        startBtn.onclick = () => {
+            startBtn.style.display = 'none';
             showForm('register');
         };
 
-        // 3. PASSWORD STRENGTH
-        document.getElementById('reg-pass').oninput = function(e) {
-            const v = e.target.value; this.className = '';
-            if (v.length >= 8 && /[A-Z]/.test(v)) this.classList.add('strong');
-            else if (v.length >= 5) this.classList.add('medium');
-            else if (v.length > 0) this.classList.add('weak');
-        };
-
-        // 4. LOGIC FORMS
         function showForm(type) {
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'none';
+            const forms = document.querySelectorAll('.auth-form');
+            forms.forEach(f => { f.style.display = 'none'; f.classList.remove('active'); });
+            
             const target = document.getElementById(type + '-form');
             target.style.display = 'flex';
-            setTimeout(() => target.style.opacity = '1', 50);
+            setTimeout(() => target.classList.add('active'), 50);
+        }
+
+        // --- 3. VIDEO INTRO ---
+        function handleLogin() {
+            const container = document.getElementById('main-container');
+            const videoBox = document.getElementById('video-intro-container');
+            const video = document.getElementById('intro-video');
+
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.style.display = 'none';
+                videoBox.style.display = 'flex';
+                setTimeout(() => videoBox.style.opacity = '1', 50);
+                video.play();
+            }, 600);
+        }
+
+        // --- UTILS ---
+        function togglePass(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function autoGen() {
+            const p = "S" + Math.random().toString(36).slice(-8).toUpperCase() + "!";
+            document.getElementById('reg-pass').value = p;
+            document.getElementById('reg-repass').value = p;
         }
 
         function handleRegister() {
-            const u = document.getElementById('reg-user').value.trim();
-            const p = document.getElementById('reg-pass').value;
-            if(!u || !p) return showToast("⚠️ Nhập đủ thông tin!");
-            const uid = "UID-" + Array.from({length: 16}, () => Math.floor(Math.random()*10)).join('');
-            users.push({username: u, password: p, uid: uid});
-            localStorage.setItem('TST_DATABASE', JSON.stringify(users));
-            showToast("✅ Đã khởi tạo ký ức!");
-            setTimeout(() => showForm('login'), 1500);
+            alert("Đăng ký thành công! Hãy chuyển sang Đăng nhập.");
+            showForm('login');
         }
-
-        function handleLogin() {
-            const u = document.getElementById('login-user').value.trim();
-            const p = document.getElementById('login-pass').value;
-            const found = users.find(x => x.username === u && x.password === p);
-            if(found) {
-                curUser = found;
-                showToast("🚀 Đang đồng bộ hóa...");
-                document.getElementById('main-container').style.opacity = '0';
-                setTimeout(playIntro, 800);
-            } else {
-                showToast("❌ Thông tin sai lệch!");
-                document.getElementById('main-container').classList.add('shake');
-                setTimeout(() => document.getElementById('main-container').classList.remove('shake'), 400);
-            }
-        }
-
-        // 5. VIDEO INTRO
-        function playIntro() {
-            document.getElementById('bgm').pause();
-            const vc = document.getElementById('video-intro-container');
-            const vid = document.getElementById('intro-video');
-            vc.style.display = 'flex';
-            setTimeout(() => vc.style.opacity = '1', 50);
-            vid.play().catch(() => {
-                showToast("Nhấp màn hình để xem Intro");
-                window.onclick = () => { vid.play(); window.onclick = null; };
-            });
-            vid.onended = finishIntro;
-            window.onkeydown = (e) => { if(e.key === "Escape") finishIntro(); };
-        }
-
-        function finishIntro() {
-            const vc = document.getElementById('video-intro-container');
-            vc.style.opacity = '0';
-            setTimeout(() => {
-                vc.remove();
-                document.getElementById('bgm').play();
-                document.getElementById('main-container').style.display = 'none';
-                const gui = document.getElementById('game-interface');
-                gui.style.display = 'flex';
-                document.getElementById('display-name').innerText = curUser.username.toUpperCase();
-                document.getElementById('display-uid').innerText = "ID: " + curUser.uid;
-                setTimeout(() => gui.style.opacity = '1', 100);
-            }, 800);
-        }
-
-        // UTILS
-        function togglePass(id) { const x = document.getElementById(id); x.type = x.type === "password" ? "text" : "password"; }
-        function autoGenPass() {
-            const p = "S" + Math.random().toString(36).slice(-8).toUpperCase() + "!";
-            document.getElementById('reg-pass').value = p; document.getElementById('reg-repass').value = p;
-            document.getElementById('reg-pass').dispatchEvent(new Event('input'));
-        }
-        function showToast(m) {
-            const t = document.createElement('div'); t.className = 'toast'; t.innerText = m;
-            document.getElementById('toast-container').appendChild(t);
-            setTimeout(() => t.classList.add('show'), 100);
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 3000);
-        }
-        document.getElementById('volume-slider').oninput = (e) => { document.getElementById('bgm').volume = e.target.value; };
     </script>
 </body>
 </html>
