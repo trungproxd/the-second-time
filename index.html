@@ -4,296 +4,331 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Second Time - Universe System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- RESET & NỀN --- */
+        /* --- 1. CẤU TRÌNH CƠ BẢN & NỀN --- */
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { 
-            margin: 0; padding: 0; background: #0b0e14 url('./cover.jpg') no-repeat center fixed; 
+            margin: 0; padding: 0; background: #05070a url('./cover.jpg') no-repeat center fixed; 
             background-size: cover; display: flex; justify-content: center; align-items: center; 
             height: 100vh; overflow: hidden; font-family: 'Be Vietnam Pro', sans-serif; color: white; 
         }
 
-        /* --- HIỆU ỨNG SAO BĂNG --- */
+        /* --- 2. HIỆU ỨNG SAO BĂNG (ANIMATION CHI TIẾT) --- */
         .meteors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .meteor { position: absolute; top: -10px; width: 2px; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); transform: rotate(-45deg); animation: shoot 5s linear infinite; }
-        @keyframes shoot { 0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 1; } 100% { top: 110%; transform: translateX(-600px) rotate(-45deg); opacity: 0; } }
+        .meteor { 
+            position: absolute; top: -50px; width: 2px; height: 100px; 
+            background: linear-gradient(to bottom, rgba(255,255,255,0), #38bdf8); 
+            transform: rotate(-45deg); opacity: 0; animation: meteor-fall 6s cubic-bezier(0.4, 0, 1, 1) infinite; 
+        }
+        @keyframes meteor-fall { 
+            0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 0; } 
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 110%; transform: translateX(-800px) rotate(-45deg); opacity: 0; } 
+        }
 
-        /* --- KHUNG ĐĂNG NHẬP --- */
+        /* --- 3. CONTAINER ĐĂNG NHẬP (GLOW & BLUR) --- */
         .container { 
             position: relative; width: 850px; height: 550px; 
-            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(15px); 
-            border: 2px solid rgba(56, 189, 248, 0.4); border-radius: 24px; 
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(25px); 
+            border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 30px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 40px; box-shadow: 0 0 60px rgba(0,0,0,0.9); z-index: 10; 
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            padding: 50px; box-shadow: 0 0 100px rgba(0,0,0,0.8), inset 0 0 20px rgba(56, 189, 248, 0.1); 
+            z-index: 10; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
         }
 
-        /* --- NOW PLAYING (GÓC TRÁI) --- */
-        .music-player-fixed {
-            position: fixed; bottom: 30px; left: 30px; z-index: 100;
-            display: none; flex-direction: column; gap: 8px;
-            background: rgba(15, 23, 42, 0.9); padding: 15px 22px;
-            border-radius: 14px; border-left: 4px solid #38bdf8;
-            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        /* --- 4. TRÌNH PHÁT NHẠC GÓC DƯỚI --- */
+        .music-player {
+            position: fixed; bottom: 40px; left: 40px; z-index: 100;
+            display: none; flex-direction: column; gap: 10px;
+            background: rgba(15, 23, 42, 0.85); padding: 18px 25px;
+            border-radius: 15px; border-left: 5px solid #38bdf8;
+            backdrop-filter: blur(12px); box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
-        #music-info { font-size: 11px; color: #38bdf8; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; animation: pulse 2s infinite; }
-        #volume-box { display: flex; align-items: center; gap: 10px; }
-        #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 90px; height: 4px; }
-        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        #music-info { font-size: 10px; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; animation: blink 1.5s infinite; }
+        #vol-control { display: flex; align-items: center; gap: 12px; }
+        #vol-control input { cursor: pointer; accent-color: #38bdf8; width: 100px; height: 3px; }
+        @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        /* --- FORM ĐĂNG KÝ/NHẬP --- */
-        .auth-form { display: none; width: 100%; max-width: 380px; flex-direction: column; opacity: 0; transition: 0.5s; }
-        .input-group { margin-bottom: 20px; text-align: left; position: relative; }
-        .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .input-group input { width: 100%; padding: 13px 15px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; padding-right: 45px; }
-        
-        /* ĐỘ MẠNH MẬT KHẨU (GLOW) */
-        input.weak { border-color: #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); }
-        input.medium { border-color: #f59e0b !important; box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
-        input.strong { border-color: #10b981 !important; box-shadow: 0 0 18px rgba(16, 185, 129, 0.5); }
-
-        .eye-icon { position: absolute; right: 15px; top: 35px; cursor: pointer; color: #64748b; font-size: 18px; z-index: 5; }
-        .gen-btn { color: #38bdf8; cursor: pointer; font-weight: bold; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 6px; border-radius: 4px; }
-
-        .confirm-btn { 
-            width: 100%; padding: 16px; background: linear-gradient(135deg, #0f172a, #000); 
-            color: #fff; border: 1px solid #38bdf8; border-radius: 12px; font-weight: 700; 
-            cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.4s;
+        /* --- 5. FORM CHI TIẾT --- */
+        .auth-form { display: none; width: 100%; max-width: 400px; flex-direction: column; opacity: 0; transform: translateY(20px); transition: 0.6s; }
+        .input-box { margin-bottom: 25px; text-align: left; position: relative; }
+        .input-box label { display: flex; justify-content: space-between; color: #64748b; font-size: 11px; margin-bottom: 10px; letter-spacing: 1px; }
+        .input-box input { 
+            width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.5); 
+            border: 1px solid #1e293b; border-radius: 12px; color: #fff; 
+            outline: none; transition: 0.4s; font-size: 14px;
         }
-        .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 30px rgba(56, 189, 248, 0.5); }
+        .input-box input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
 
-        /* --- VIDEO INTRO OVERLAY --- */
-        #video-intro-container {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000; z-index: 10000; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 1s;
+        /* ĐỘ MẠNH PASS (MÀU RỰC RỠ) */
+        input.weak { border-color: #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+        input.medium { border-color: #f59e0b !important; box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+        input.strong { border-color: #10b981 !important; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+
+        .btn-confirm { 
+            width: 100%; padding: 18px; background: linear-gradient(135deg, #0f172a, #020617); 
+            color: #fff; border: 1px solid #38bdf8; border-radius: 14px; font-weight: 700; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        #intro-video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-        .skip-intro-btn { position: absolute; bottom: 30px; right: 30px; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 5px; cursor: pointer; z-index: 10001; font-size: 11px; }
+        .btn-confirm:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(56, 189, 248, 0.4); border-color: white; }
 
-        /* --- GIAO DIỆN GAME CHÍNH --- */
-        #game-interface {
-            display: none; width: 90%; max-width: 1100px; height: 80vh;
-            background: rgba(10, 15, 25, 0.85); backdrop-filter: blur(20px);
-            border: 1px solid #38bdf8; border-radius: 20px; padding: 30px;
-            position: relative; flex-direction: column; opacity: 0; transition: 1.5s; z-index: 50;
+        /* --- 6. VIDEO INTRO (FULLSCREEN) --- */
+        #video-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 99999; opacity: 0; transition: opacity 1.5s;
         }
-        .game-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 15px; }
-        .user-info h2 { margin: 0; color: #38bdf8; text-shadow: 0 0 10px #38bdf8; }
-        .uid-tag { font-size: 11px; color: #64748b; letter-spacing: 1px; }
+        #intro-vid { width: 100%; height: 100%; object-fit: cover; }
+        .skip-overlay { position: absolute; bottom: 40px; right: 40px; color: #64748b; font-size: 12px; cursor: pointer; border: 1px solid #334155; padding: 10px 25px; border-radius: 5px; transition: 0.3s; }
+        .skip-overlay:hover { color: #fff; border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); }
 
-        /* --- TOAST & UTILS --- */
-        #toast-container { position: fixed; top: 25px; right: 25px; z-index: 10001; }
-        .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 5px solid #38bdf8; margin-bottom: 10px; transform: translateX(130%); transition: 0.5s; font-size: 13px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .toast.show { transform: translateX(0); }
-        .shake { animation: shake 0.4s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        /* --- 7. GIAO DIỆN GAME (SAU KHI ĐĂNG NHẬP) --- */
+        #game-ui {
+            display: none; width: 90%; max-width: 1200px; height: 85vh;
+            background: rgba(10, 15, 25, 0.9); border: 1px solid #38bdf8; 
+            border-radius: 25px; padding: 40px; flex-direction: column; 
+            opacity: 0; transform: scale(0.95); transition: 1.5s; z-index: 100;
+        }
+        .ui-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 20px; }
+        .ui-header h2 { margin: 0; letter-spacing: 5px; color: #38bdf8; text-shadow: 0 0 15px #38bdf8; }
+
+        /* --- 8. TOAST SYSTEM --- */
+        #toast-box { position: fixed; top: 30px; right: 30px; z-index: 100000; }
+        .toast { 
+            background: rgba(15, 23, 42, 0.95); color: #fff; padding: 18px 30px; 
+            border-radius: 12px; border-left: 6px solid #38bdf8; margin-bottom: 15px; 
+            transform: translateX(150%); transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 13px;
+        }
+        .toast.active { transform: translateX(0); }
+        .shake { animation: shake-ani 0.4s; }
+        @keyframes shake-ani { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-15px); } 75% { transform: translateX(15px); } }
     </style>
 </head>
 <body>
 
-    <div id="toast-container"></div>
-    <div class="meteors"><div class="meteor" style="left: 30%;"></div><div class="meteor" style="left: 80%; animation-delay: 2s;"></div></div>
+    <div id="toast-box"></div>
 
-    <div class="music-player-fixed" id="player-ui">
-        <div id="music-info">🎵 NOW PLAYING: SENBONZAKURA</div>
-        <div id="volume-box"><input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5"></div>
+    <div class="meteors">
+        <div class="meteor" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="meteor" style="left: 40%; animation-delay: 2s;"></div>
+        <div class="meteor" style="left: 70%; animation-delay: 4s;"></div>
+        <div class="meteor" style="left: 90%; animation-delay: 1s;"></div>
     </div>
 
-    <div class="container" id="main-container">
-        <div class="logo-box"><img src="./logo.png" alt="Logo" style="max-width: 250px; margin-bottom: 20px;"></div>
+    <audio id="bgm-main" loop src="./bgm.mp3"></audio>
+
+    <div class="music-player" id="player-ui">
+        <div id="music-info">System BGM: Online</div>
+        <div id="vol-control">
+            <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.5">
+        </div>
+    </div>
+
+    <div class="container" id="main-frame">
+        <div id="logo-zone"><img src="./logo.png" style="max-width: 300px; margin-bottom: 30px; filter: drop-shadow(0 0 20px #38bdf8);"></div>
         
-        <div id="loading-area" style="width: 60%; text-align: center;">
-            <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; border: 1px solid #334155;">
-                <div id="bar-fill" style="width: 0%; height: 100%; background: #38bdf8; transition: 0.1s;"></div>
+        <div id="load-box" style="width: 70%; text-align: center;">
+            <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.5); border-radius: 10px; border: 1px solid #1e293b; overflow: hidden;">
+                <div id="bar" style="width: 0%; height: 100%; background: #38bdf8; box-shadow: 0 0 15px #38bdf8; transition: 0.1s;"></div>
             </div>
-            <p style="color: #38bdf8; font-size: 10px; margin-top: 10px; letter-spacing: 2px;">SYNCING UNIVERSE... <span id="percent">0%</span></p>
+            <p style="font-size: 10px; color: #38bdf8; margin-top: 15px; letter-spacing: 4px;">SYNCHRONIZING... <span id="perc">0%</span></p>
         </div>
 
-        <button id="start-btn" style="display: none; background: transparent; color: #fff; border: 2px solid #38bdf8; padding: 15px 60px; font-size: 18px; font-weight: 700; cursor: pointer; border-radius: 50px; transition: 0.3s; letter-spacing: 3px;">NHẤP ĐỂ BẮT ĐẦU</button>
+        <button id="btn-start" style="display: none; background: transparent; color: #fff; border: 2px solid #38bdf8; padding: 20px 70px; border-radius: 60px; cursor: pointer; font-size: 20px; font-weight: bold; letter-spacing: 5px; transition: 0.4s;">BẮT ĐẦU</button>
 
-        <div id="register-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px;">ĐĂNG KÝ</h3>
-            <div class="input-group"><label>Tên nhân vật</label><input type="text" id="reg-user" placeholder="Tên của bạn..."></div>
-            <div class="input-group">
-                <label>Mật khẩu <span class="gen-btn" onclick="autoGenPass()">TẠO TỰ ĐỘNG</span></label>
-                <input type="password" id="reg-pass" placeholder="Mật khẩu...">
-                <span class="eye-icon" onclick="togglePass('reg-pass')">👁</span>
+        <div id="reg-form" class="auth-form">
+            <h2 style="text-align: center; letter-spacing: 10px; margin-bottom: 30px;">REGISTER</h2>
+            <div class="input-box"><label>TÊN NHÂN VẬT</label><input type="text" id="r-user" placeholder="Nhập tên truy cập..."></div>
+            <div class="input-box">
+                <label>MẬT KHẨU <span style="color: #38bdf8; cursor: pointer; font-size: 9px;" onclick="genPass()">[TẠO TỰ ĐỘNG]</span></label>
+                <input type="password" id="r-pass" placeholder="Mật khẩu bảo mật...">
             </div>
-            <div class="input-group">
-                <label>Xác nhận lại</label>
-                <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu...">
-                <span class="eye-icon" onclick="togglePass('reg-repass')">👁</span>
-            </div>
-            <button class="confirm-btn" onclick="handleRegister()">Khởi Tạo Ký Ức</button>
-            <p style="text-align:center; font-size:11px; margin-top:15px;">Đã có tài khoản? <b style="color:#38bdf8; cursor:pointer;" onclick="showForm('login')">Đăng nhập</b></p>
+            <div class="input-box"><label>XÁC NHẬN</label><input type="password" id="r-repass"></div>
+            <button class="btn-confirm" onclick="doRegister()">KHỞI TẠO DỮ LIỆU</button>
+            <p style="font-size: 11px; text-align: center; margin-top: 20px; color: #64748b;">Đã có ký ức? <b style="color: #38bdf8; cursor: pointer;" onclick="toggleAuth('login')">ĐĂNG NHẬP</b></p>
         </div>
 
-        <div id="login-form" class="auth-form">
-            <h3 style="text-align:center; margin-bottom:20px;">ĐĂNG NHẬP</h3>
-            <div class="input-group"><label>Username</label><input type="text" id="login-user"></div>
-            <div class="input-group"><label>Password</label><input type="password" id="login-pass"></div>
-            <button class="confirm-btn" onclick="handleLogin()">Vào Universe</button>
-            <p style="text-align:center; font-size:11px; margin-top:15px;">Người mới? <b style="color:#38bdf8; cursor:pointer;" onclick="showForm('register')">Đăng ký</b></p>
+        <div id="log-form" class="auth-form">
+            <h2 style="text-align: center; letter-spacing: 10px; margin-bottom: 30px;">LOGIN</h2>
+            <div class="input-box"><label>USERNAME</label><input type="text" id="l-user"></div>
+            <div class="input-box"><label>PASSWORD</label><input type="password" id="l-pass"></div>
+            <button class="btn-confirm" onclick="doLogin()">VÀO UNIVERSE</button>
+            <p style="font-size: 11px; text-align: center; margin-top: 20px; color: #64748b;">Chưa có dữ liệu? <b style="color: #38bdf8; cursor: pointer;" onclick="toggleAuth('reg')">ĐĂNG KÝ</b></p>
         </div>
     </div>
 
-    <div id="video-intro-container">
-        <video id="intro-video" muted playsinline>
+    <div id="video-layer">
+        <video id="intro-vid" muted playsinline>
             <source src="./intro.mp4" type="video/mp4">
         </video>
-        <div class="skip-intro-btn" onclick="finishIntro()">BỎ QUA INTRO [ESC]</div>
+        <div class="skip-overlay" onclick="endIntro()">BỎ QUA INTRO [ESC]</div>
     </div>
 
-    <div id="game-interface">
-        <div class="game-header">
-            <div class="user-info">
-                <h2 id="display-name">PLAYER</h2>
-                <span class="uid-tag" id="display-uid">UID: 0000...</span>
+    <div id="game-ui">
+        <div class="ui-header">
+            <div>
+                <h2 id="g-name">CHARACTER</h2>
+                <span id="g-uid" style="font-size: 10px; color: #64748b; letter-spacing: 1px;">UID: 00000000</span>
             </div>
-            <div style="color: #10b981; font-size: 11px;">● HỆ THỐNG ONLINE</div>
+            <div style="text-align: right; color: #10b981; font-size: 12px; font-weight: bold;">● SYSTEM STATUS: STABLE</div>
         </div>
-        <div style="margin-top: 50px; text-align: center; color: #94a3b8;">
-            <p>Đang tải dữ liệu không gian...</p>
+        <div style="flex: 1; display: flex; justify-content: center; align-items: center; border: 1px dashed rgba(56,189,248,0.2); margin-top: 30px; border-radius: 15px;">
+            <p style="color: #475569; font-style: italic;">Không gian Universe đang được xây dựng...</p>
         </div>
     </div>
-
-    <audio id="bgm" loop src="./bgm.mp3"></audio>
 
     <script>
-        const container = document.getElementById('main-container');
-        const bgm = document.getElementById('bgm');
-        const regPassInput = document.getElementById('reg-pass');
-        let users = JSON.parse(localStorage.getItem('TST_DATABASE')) || [];
+        let database = JSON.parse(localStorage.getItem('UNIVERSE_DB')) || [];
+        let sessionUser = null;
 
-        // --- 1. LOADING ---
-        let prg = 0;
-        const loadingInv = setInterval(() => {
-            prg += Math.floor(Math.random() * 5) + 2;
-            if (prg >= 100) { prg = 100; clearInterval(loadingInv); document.getElementById('loading-area').style.display='none'; document.getElementById('start-btn').style.display='block'; }
-            document.getElementById('bar-fill').style.width = prg + '%';
-            document.getElementById('percent').innerText = prg + '%';
-        }, 70);
+        // --- 1. HIỆU ỨNG LOADING ---
+        let loadStep = 0;
+        const loadInv = setInterval(() => {
+            loadStep += Math.floor(Math.random() * 4) + 1;
+            if(loadStep >= 100) {
+                loadStep = 100; clearInterval(loadInv);
+                document.getElementById('load-box').style.display = 'none';
+                document.getElementById('btn-start').style.display = 'block';
+            }
+            document.getElementById('bar').style.width = loadStep + '%';
+            document.getElementById('perc').innerText = loadStep + '%';
+        }, 50);
 
-        // --- 2. START ---
-        document.getElementById('start-btn').onclick = () => {
-            document.getElementById('start-btn').style.display = 'none';
+        // --- 2. BẮT ĐẦU ---
+        document.getElementById('btn-start').onclick = () => {
+            document.getElementById('btn-start').style.display = 'none';
             document.getElementById('player-ui').style.display = 'flex';
-            bgm.volume = 0.5; bgm.play().catch(() => {});
-            container.style.width = '420px';
-            showForm('register');
+            document.getElementById('bgm-main').volume = 0.5;
+            document.getElementById('bgm-main').play().catch(()=>{});
+            document.getElementById('main-frame').style.width = '450px';
+            toggleAuth('reg');
         };
 
-        // --- 3. PASSWORD STRENGTH ---
-        regPassInput.addEventListener('input', () => {
-            const val = regPassInput.value;
-            regPassInput.classList.remove('weak', 'medium', 'strong');
-            if (!val) return;
-            if (val.length >= 8 && /[A-Z]/.test(val)) regPassInput.classList.add('strong');
-            else if (val.length >= 6) regPassInput.classList.add('medium');
-            else regPassInput.classList.add('weak');
+        // --- 3. PASSWORD STRENGTH COLOR ---
+        document.getElementById('r-pass').addEventListener('input', (e) => {
+            const v = e.target.value;
+            e.target.classList.remove('weak', 'medium', 'strong');
+            if(!v) return;
+            if(v.length >= 8 && /[A-Z]/.test(v) && /[0-9]/.test(v)) e.target.classList.add('strong');
+            else if(v.length >= 6) e.target.classList.add('medium');
+            else e.target.classList.add('weak');
         });
 
-        // --- 4. FORM LOGIC ---
-        function showForm(type) {
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'none';
-            const target = document.getElementById(type + '-form');
+        // --- 4. AUTH LOGIC ---
+        function toggleAuth(type) {
+            document.getElementById('reg-form').style.display = 'none';
+            document.getElementById('log-form').style.display = 'none';
+            const target = document.getElementById(type === 'reg' ? 'reg-form' : 'log-form');
             target.style.display = 'flex';
             setTimeout(() => target.style.opacity = '1', 50);
         }
 
-        function handleRegister() {
-            const user = document.getElementById('reg-user').value.trim();
-            const p1 = regPassInput.value;
-            const p2 = document.getElementById('reg-repass').value;
-            if (!user || !p1) return showToast("⚠️ Thiếu thông tin!");
-            if (p1 !== p2) return showToast("❌ Mật khẩu không khớp!");
-            if (users.some(u => u.username === user)) {
-                showToast("❌ Tài khoản đã tồn tại!");
-                container.classList.add('shake'); setTimeout(() => container.classList.remove('shake'), 400);
+        function doRegister() {
+            const u = document.getElementById('r-user').value.trim();
+            const p1 = document.getElementById('r-pass').value;
+            const p2 = document.getElementById('r-repass').value;
+
+            if(!u || !p1) return sendToast("⚠️ Vui lòng nhập đủ thông tin!");
+            if(p1 !== p2) return sendToast("❌ Mật khẩu không trùng khớp!");
+            if(database.some(x => x.username === u)) {
+                sendToast("❌ Tên nhân vật đã tồn tại!");
+                document.getElementById('main-frame').classList.add('shake');
+                setTimeout(() => document.getElementById('main-frame').classList.remove('shake'), 400);
                 return;
             }
-            const uid = Array.from({length: 20}, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random()*36)]).join('');
-            users.push({ uid, username: user, password: p1 });
-            localStorage.setItem('TST_DATABASE', JSON.stringify(users));
-            showToast("✅ Đăng ký thành công!");
-            setTimeout(() => showForm('login'), 1500);
+
+            const uid = "U-" + Math.random().toString(36).substr(2, 9).toUpperCase() + "-" + Date.now().toString().slice(-4);
+            database.push({ username: u, password: p1, uid: uid });
+            localStorage.setItem('UNIVERSE_DB', JSON.stringify(database));
+            sendToast("✅ Khởi tạo thành công! Đang chuyển...");
+            setTimeout(() => toggleAuth('login'), 1500);
         }
 
-        function handleLogin() {
-            const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value;
-            const found = users.find(u => u.username === user && u.password === pass);
-            if (found) {
-                showToast("🚀 Khởi động Intro...");
-                container.style.opacity = '0';
-                setTimeout(() => playIntroVideo(found), 800);
+        function doLogin() {
+            const u = document.getElementById('l-user').value.trim();
+            const p = document.getElementById('l-pass').value;
+            const user = database.find(x => x.username === u && x.password === p);
+
+            if(user) {
+                sessionUser = user;
+                sendToast("🚀 Đồng bộ dữ liệu... Đang vào Universe");
+                document.getElementById('main-frame').style.opacity = '0';
+                setTimeout(startIntro, 1000);
             } else {
-                showToast("❌ Thông tin sai!");
-                container.classList.add('shake'); setTimeout(() => container.classList.remove('shake'), 400);
+                sendToast("❌ Sai mật khẩu hoặc tài khoản!");
+                document.getElementById('main-frame').classList.add('shake');
+                setTimeout(() => document.getElementById('main-frame').classList.remove('shake'), 400);
             }
         }
 
-        // --- 5. VIDEO LOGIC (FIXED) ---
-        let currentUData = null;
-        function playIntroVideo(userData) {
-            currentUData = userData;
-            bgm.pause();
-            const vc = document.getElementById('video-intro-container');
-            const video = document.getElementById('intro-video');
-            vc.style.display = 'flex';
-            setTimeout(() => vc.style.opacity = '1', 50);
+        // --- 5. INTRO VIDEO SYSTEM ---
+        function startIntro() {
+            const layer = document.getElementById('video-layer');
+            const vid = document.getElementById('intro-vid');
+            layer.style.display = 'flex';
+            document.getElementById('bgm-main').pause();
 
-            // Force play video
-            video.play().then(() => {
-                video.muted = false; // Bật lại tiếng khi đã phát thành công
-            }).catch(e => {
-                console.log("Autoplay blocked, waiting for click");
-                showToast("Nhấn vào màn hình để xem Intro");
-                window.onclick = () => { video.play(); video.muted = false; };
+            setTimeout(() => layer.style.opacity = '1', 50);
+            
+            vid.muted = true; // Fix autoplay browser
+            vid.play().then(() => { vid.muted = false; }).catch(() => {
+                sendToast("Nhấn để xem Intro");
+                window.onclick = () => { vid.play(); vid.muted = false; };
             });
 
-            video.onended = () => finishIntro();
-            window.onkeydown = (e) => { if(e.key === "Escape") finishIntro(); };
+            // Tự động bỏ qua sau 5s nếu file video không load được (đề phòng lỗi file)
+            const failSafe = setTimeout(() => {
+                if(vid.paused) {
+                    sendToast("Lỗi file intro.mp4, đang vào Game...");
+                    endIntro();
+                }
+            }, 5000);
+
+            vid.onended = () => { clearTimeout(failSafe); endIntro(); };
+            window.onkeydown = (e) => { if(e.key === 'Escape') endIntro(); };
         }
 
-        function finishIntro() {
-            const vc = document.getElementById('video-intro-container');
-            if(!vc) return;
-            vc.style.opacity = '0';
+        function endIntro() {
+            const layer = document.getElementById('video-layer');
+            layer.style.opacity = '0';
             setTimeout(() => {
-                vc.remove();
-                bgm.play();
-                showGameUI();
-            }, 1000);
+                layer.remove();
+                document.getElementById('bgm-main').play();
+                showGame();
+            }, 1500);
         }
 
-        function showGameUI() {
-            container.style.display = 'none';
-            const gui = document.getElementById('game-interface');
+        function showGame() {
+            document.getElementById('main-frame').style.display = 'none';
+            const gui = document.getElementById('game-ui');
             gui.style.display = 'flex';
-            document.getElementById('display-name').innerText = currentUData.username.toUpperCase();
-            document.getElementById('display-uid').innerText = "UID: " + currentUData.uid;
-            setTimeout(() => gui.style.opacity = '1', 100);
+            document.getElementById('g-name').innerText = sessionUser.username.toUpperCase();
+            document.getElementById('g-uid').innerText = "UID: " + sessionUser.uid;
+            setTimeout(() => {
+                gui.style.opacity = '1';
+                gui.style.transform = 'scale(1)';
+            }, 100);
         }
 
         // --- UTILS ---
-        function autoGenPass() {
-            const p = "S" + Math.random().toString(36).slice(-8).toUpperCase() + "!";
-            regPassInput.value = p; document.getElementById('reg-repass').value = p;
-            regPassInput.dispatchEvent(new Event('input'));
-            showToast("Đã tạo pass mạnh!");
-        }
-        function togglePass(id) { const el = document.getElementById(id); el.type = el.type === 'password' ? 'text' : 'password'; }
-        function showToast(m) {
+        function sendToast(m) {
             const t = document.createElement('div'); t.className = 'toast'; t.innerText = m;
-            document.getElementById('toast-container').appendChild(t);
-            setTimeout(() => t.classList.add('show'), 100);
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 3000);
+            document.getElementById('toast-box').appendChild(t);
+            setTimeout(() => t.classList.add('active'), 50);
+            setTimeout(() => { t.classList.remove('active'); setTimeout(() => t.remove(), 500); }, 3500);
         }
-        document.getElementById('volume-slider').oninput = (e) => { bgm.volume = e.target.value; };
+        function genPass() {
+            const p = "S" + Math.random().toString(36).slice(-7).toUpperCase() + "9!";
+            document.getElementById('r-pass').value = p;
+            document.getElementById('r-repass').value = p;
+            document.getElementById('r-pass').dispatchEvent(new Event('input'));
+            sendToast("Đã tạo mật khẩu bảo mật!");
+        }
+        document.getElementById('vol-slider').oninput = (e) => { document.getElementById('bgm-main').volume = e.target.value; };
     </script>
 </body>
 </html>
