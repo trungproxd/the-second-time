@@ -6,7 +6,7 @@
     <title>The Second Time - Universe System</title>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- NỀN VÀ GIAO DIỆN CHUNG --- */
+        /* --- GIỮ NGUYÊN STYLE CỦA BẠN --- */
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { 
             margin: 0; padding: 0; background: #0b0e14 url('./cover.jpg') no-repeat center fixed; 
@@ -14,12 +14,10 @@
             height: 100vh; overflow: hidden; font-family: 'Be Vietnam Pro', sans-serif; color: white; 
         }
 
-        /* --- SAO BĂNG --- */
         .meteors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .meteor { position: absolute; top: -10px; width: 2px; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); transform: rotate(-45deg); animation: shoot 5s linear infinite; }
         @keyframes shoot { 0% { top: -10%; transform: translateX(0) rotate(-45deg); opacity: 1; } 100% { top: 110%; transform: translateX(-600px) rotate(-45deg); opacity: 0; } }
 
-        /* --- CONTAINER ĐĂNG NHẬP --- */
         .container { 
             position: relative; width: 850px; height: 550px; 
             background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(15px); 
@@ -29,7 +27,6 @@
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        /* --- NOW PLAYING (GÓC TRÁI) --- */
         .music-player-fixed {
             position: fixed; bottom: 30px; left: 30px; z-index: 100;
             display: none; flex-direction: column; gap: 8px;
@@ -42,13 +39,11 @@
         #volume-box input { cursor: pointer; accent-color: #38bdf8; width: 90px; height: 4px; }
         @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-        /* --- FORM STYLING --- */
         .auth-form { display: none; width: 100%; max-width: 380px; flex-direction: column; opacity: 0; transition: 0.5s; }
         .input-group { margin-bottom: 20px; text-align: left; position: relative; }
         .input-group label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
         .input-group input { width: 100%; padding: 13px 15px; background: rgba(0, 0, 0, 0.7); border: 1px solid #334155; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; padding-right: 45px; }
         
-        /* ĐỘ MẠNH MẬT KHẨU (GLOW) */
         input.weak { border-color: #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); }
         input.medium { border-color: #f59e0b !important; box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
         input.strong { border-color: #10b981 !important; box-shadow: 0 0 18px rgba(16, 185, 129, 0.5); }
@@ -63,15 +58,15 @@
         }
         .confirm-btn:hover { border-color: #fff; box-shadow: 0 0 30px rgba(56, 189, 248, 0.5); }
 
-        /* --- VIDEO INTRO OVERLAY --- */
+        /* --- VIDEO INTRO OVERLAY (FIXED) --- */
         #video-intro-container {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000; z-index: 10000; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 1s;
         }
         #intro-video { width: 100%; height: 100%; object-fit: cover; }
-        .skip-intro-btn { position: absolute; bottom: 30px; right: 30px; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 5px; cursor: pointer; z-index: 10001; }
+        .skip-intro-btn { position: absolute; bottom: 30px; right: 30px; color: #fff; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 5px; cursor: pointer; z-index: 10001; }
 
-        /* --- GIAO DIỆN CHÍNH (IN-GAME) --- */
         #game-interface {
             display: none; width: 90%; max-width: 1100px; height: 80vh;
             background: rgba(10, 15, 25, 0.85); backdrop-filter: blur(20px);
@@ -82,12 +77,9 @@
         .user-info h2 { margin: 0; color: #38bdf8; text-shadow: 0 0 10px #38bdf8; }
         .uid-tag { font-size: 11px; color: #64748b; letter-spacing: 1px; }
 
-        /* --- TOAST & UTILS --- */
         #toast-container { position: fixed; top: 25px; right: 25px; z-index: 1001; }
         .toast { background: rgba(15, 23, 42, 0.95); color: #fff; padding: 15px 25px; border-radius: 10px; border-left: 5px solid #38bdf8; margin-bottom: 10px; transform: translateX(130%); transition: 0.5s; font-size: 13px; }
         .toast.show { transform: translateX(0); }
-        .shake { animation: shake 0.4s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
     </style>
 </head>
 <body>
@@ -154,7 +146,7 @@
     </div>
 
     <div id="video-intro-container">
-        <video id="intro-video">
+        <video id="intro-video" playsinline>
             <source src="./intro.mp4" type="video/mp4">
         </video>
         <div class="skip-intro-btn" onclick="finishIntro()">BỎ QUA INTRO [ESC]</div>
@@ -182,7 +174,10 @@
         const loadingArea = document.getElementById('loading-area');
         const bgm = document.getElementById('bgm');
         const regPassInput = document.getElementById('reg-pass');
+        const videoContainer = document.getElementById('video-intro-container');
+        const introVideo = document.getElementById('intro-video');
         let users = JSON.parse(localStorage.getItem('TST_DATABASE')) || [];
+        let globalUserData = null;
 
         // --- 1. LOADING ---
         let prg = 0;
@@ -202,7 +197,7 @@
             showForm('register');
         };
 
-        // --- 3. MÀU SẮC MẬT KHẨU ---
+        // --- 3. PASSWORD COLOR ---
         regPassInput.addEventListener('input', () => {
             const val = regPassInput.value;
             regPassInput.classList.remove('weak', 'medium', 'strong');
@@ -212,7 +207,7 @@
             else regPassInput.classList.add('weak');
         });
 
-        // --- 4. LOGIC ĐĂNG KÝ/NHẬP ---
+        // --- 4. FORM LOGIC ---
         function showForm(type) {
             document.getElementById('register-form').style.display = 'none';
             document.getElementById('login-form').style.display = 'none';
@@ -238,7 +233,7 @@
             users.push({ uid, username: user, password: p1 });
             localStorage.setItem('TST_DATABASE', JSON.stringify(users));
             showToast("✅ Đăng ký thành công!");
-            setTimeout(() => showForm('login'), 2000);
+            setTimeout(() => showForm('login'), 1500);
         }
 
         function handleLogin() {
@@ -247,43 +242,53 @@
             const found = users.find(u => u.username === user && u.password === pass);
 
             if (found) {
+                globalUserData = found;
                 showToast("🚀 Khởi động Intro...");
                 container.style.opacity = '0';
-                setTimeout(() => playIntroVideo(found), 800);
+                setTimeout(playIntroVideo, 800);
             } else {
                 showToast("❌ Sai thông tin!");
                 container.classList.add('shake'); setTimeout(() => container.classList.remove('shake'), 400);
             }
         }
 
-        // --- 5. VIDEO INTRO LOGIC ---
-        function playIntroVideo(userData) {
+        // --- 5. FIXED VIDEO LOGIC ---
+        function playIntroVideo() {
             bgm.pause();
-            const vc = document.getElementById('video-intro-container');
-            const video = document.getElementById('intro-video');
-            vc.style.display = 'flex';
-            video.play();
-
-            video.onended = () => finishIntro(userData);
-            window.onkeydown = (e) => { if(e.key === "Escape") finishIntro(userData); };
-        }
-
-        function finishIntro(userData) {
-            const vc = document.getElementById('video-intro-container');
-            vc.style.opacity = '0';
-            setTimeout(() => {
-                vc.remove();
-                bgm.play();
-                showGameUI(userData);
-            }, 1000);
-        }
-
-        function showGameUI(userData) {
             container.style.display = 'none';
+            videoContainer.style.display = 'flex';
+            
+            // Ép video chạy từ đầu
+            introVideo.currentTime = 0;
+            introVideo.style.opacity = "1";
+            videoContainer.style.opacity = "1";
+
+            const playPromise = introVideo.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    showToast("Nhấp để xem Intro");
+                    window.onclick = () => { introVideo.play(); window.onclick = null; };
+                });
+            }
+
+            introVideo.onended = finishIntro;
+            window.addEventListener('keydown', (e) => { if(e.key === "Escape") finishIntro(); });
+        }
+
+        function finishIntro() {
+            videoContainer.style.opacity = '0';
+            setTimeout(() => {
+                videoContainer.style.display = 'none';
+                bgm.play();
+                showGameUI();
+            }, 800);
+        }
+
+        function showGameUI() {
             const gui = document.getElementById('game-interface');
             gui.style.display = 'flex';
-            document.getElementById('display-name').innerText = userData.username.toUpperCase();
-            document.getElementById('display-uid').innerText = "UID: " + userData.uid;
+            document.getElementById('display-name').innerText = globalUserData.username.toUpperCase();
+            document.getElementById('display-uid').innerText = "UID: " + globalUserData.uid;
             setTimeout(() => gui.style.opacity = '1', 100);
         }
 
@@ -292,7 +297,6 @@
             const p = "S" + Math.random().toString(36).slice(-8).toUpperCase() + "!";
             regPassInput.value = p; document.getElementById('reg-repass').value = p;
             regPassInput.dispatchEvent(new Event('input'));
-            showToast("Đã tạo mật khẩu mạnh!");
         }
         function togglePass(id) { const el = document.getElementById(id); el.type = el.type === 'password' ? 'text' : 'password'; }
         function showToast(m) {
